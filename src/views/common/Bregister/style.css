@@ -1,0 +1,53 @@
+.register-bg{
+  width:100%;
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  text-align:center;
+  background:url("../../../assets/login.jpg") no-repeat;
+  background-size:cover;
+  overflow: hidden;
+}
+.register-form{
+  position:absolute;
+  top:50%;
+  left:50%;
+  margin:-230px 0 0 -180px;
+  width:310px;
+  height:400px;
+  padding:25px;
+  box-shadow:0 0 100px rgba(0,0,0,.08);
+  background:#fff;
+  border-radius:4px;
+  z-index:3;
+}
+.login-logo{
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+  cursor: pointer;
+  margin-bottom: 24px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #6d6d6d;
+}
+.login-logo img{
+  width: 40px;
+  margin-right: 8px;
+}
+.login-logo span{
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+  vertical-align: text-bottom;
+  font-size: 18px;
+  text-transform: uppercase;
+  display: inline-block;
+}
+.to-register{
+  color: #1e8bff;
+  text-align:right;
+  margin:10px;
+  cursor:pointer;
+}
+.to-register span{
+  font-size:14px;
+}
