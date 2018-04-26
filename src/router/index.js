@@ -1,35 +1,53 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '../components/HelloWorld'
-import Login from '../views/common/Mlogin'
-import Register from '../views/common/register'
-import Bregister from '../views/common/Bregister'
-import Blogin from '../views/common/Blogin'
+
+const Login = resolve => require(['../views/common/Mlogin'], resolve)
+const Register = resolve => require(['../views/common/register'], resolve)
+const Bregister = resolve => require(['../views/common/Bregister'],resolve)
+const Blogin = resolve => require(['../views/common/Blogin'],resolve)
+const Home = resolve => require(['../components/common/Home'], resolve)
+const BaseCharts = resolve => require(['../components/page/BaseCharts'], resolve)
+const BaseForm = resolve => require(['../components/page/BaseForm'], resolve)
+const BaseTable = resolve => require(['../components/page/BaseTable'], resolve)
+const DragList = resolve => require(['../components/page/DragList'], resolve)
+const Markdown = resolve => require(['../components/page/Markdown'], resolve)
+const Readme = resolve => require(['../components/page/Readme'], resolve)
+const VueEditor = resolve => require(['../components/page/VueEditor'], resolve)
+const VueTable = resolve => require(['../components/page/VueTable'], resolve)
+const Upload = resolve => require(['../components/page/Upload'], resolve)
+
+const Bhome = resolve => require(['../views/Bpage/Bhome'], resolve)
+const Mstore = resolve => require(['../views/Bpage/Mstore'], resolve)
+
 Vue.use(Router)
 
 export default new Router({
-  mode:'history',
+  mode: 'history',
   routes: [
+    {path: '/', name: 'Login', component: Login},
+    {path: '/login', name: 'Login', component: Login},
+    {path: '/register', name: 'register', component: Register},
+    {path: '/business/register', name: 'bregister', component: Bregister},
+    {path: '/business/login', name: 'blogin', component:Blogin},
     {
-      path: '/',
-      name: 'Login',
-      component: Login
-    },{
-      path:'/login',
-      name:'Login',
-      component:Login
-    },{
-      path:'/register',
-      name:'register',
-      component:Register
-    },{
-      path:'/business/register',
-      name:'bregister',
-      component:Bregister
-    },{
-      path:'/business/login',
-      name:'blogin',
-      component:Blogin
+       path: '/home',
+       name: 'home',
+       component: Home,
+       children: [
+         {path:'/', name:'bhome', component: Bhome},
+         {path: '/readme', name: 'readme', component: Readme},
+         {path: '/basetable', name: 'basetable', component:BaseTable},
+         {path: '/vuetable', name: 'vuetable', component:VueTable},
+         {path: '/baseform', name: 'baseform', component:BaseForm},
+         {path: '/vueeditor', name: 'vueeditor', component:VueEditor},
+         {path: '/markdown', name:'markdown', component:Markdown},
+         {path: '/upload', name: 'upload', component:Upload},
+         {path: '/basecharts', name: 'basecharts', component:BaseCharts},
+         {path: '/drag', name: 'drag', component:DragList},
+
+         {path: '/mstore', name: 'mstore', component: Mstore},
+       ]
     }
   ]
 })

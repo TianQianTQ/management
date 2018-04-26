@@ -9,7 +9,6 @@ export default {
   name: 'App'
 }
 </script>
-
 <style>
   @import "../static/css/main.css";
   @import "../static/css/color-dark.css";     /*深色主题*/
@@ -19,6 +18,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
