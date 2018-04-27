@@ -7,12 +7,12 @@
     </div>
     <div class="form-box">
       <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="表单名称">
+        <el-form-item label="店铺名称">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="选择器">
+        <el-form-item label="主营类目">
           <el-select v-model="form.region" placeholder="请选择">
-            <el-option key="bbk" label="选项一" value="bbk"></el-option>
+            <el-option key="bbk" label="" value="bbk"></el-option>
             <el-option key="xtc" label="选项二" value="xtc"></el-option>
             <el-option key="imoo" label="选项三" value="imoo"></el-option>
           </el-select>
@@ -82,5 +82,4 @@
 </script>
 
 <style scoped>
-
 </style>

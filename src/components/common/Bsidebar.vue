@@ -75,32 +75,32 @@
                     },
                     {
                         icon: 'iconfont t-icon_yuangongguanli',
-                        index: 'drag',
+                        index: 'upload',
                         title: '员工管理'
                     },
                     {
                       icon: 'iconfont t-permissions',
-                      index: 'drag',
+                      index: 'markdown',
                       title: '权限管理'
                     },
                     {
                       icon: 'iconfont t-kefu',
-                      index: 'drag',
+                      index: 'vueeditor',
                       title: '客服管理'
                     },
                     {
                       icon: 'iconfont t-gerenzhongxin',
-                      index: 'drag',
+                      index: 'baseform',
                       title: '个人中心'
                     },
                     {
                       icon: 'iconfont t-zijinguanli',
-                      index: 'drag',
+                      index: 'vuetable',
                       title: '资金管理'
                     },
                     {
                       icon: 'iconfont t-tongji',
-                      index: 'drag',
+                      index: 'basetable',
                       title: '统计报表'
                     }
                 ]
