@@ -19,23 +19,32 @@
     </div>
 </template>
 <script>
+    import * as utils from '../../utils/utils';
     export default {
         data() {
             return {
                 name: 'tq',
-
+                view:''
             }
+        },
+        mounted:function(){
+          if(utils.getView() === 'administrator') {
+            this.view = 'mhome';
+            console.log(utils.getView());
+          }else{
+            this.view = 'bhome';
+          }
         },
         computed:{
             username(){
-                let username = localStorage.getItem('ms_username');
+                let username = localStorage.getItem('name');
                 return username ? username : this.name;
             }
         },
         methods:{
             handleCommand(command) {
                 if(command == 'loginout'){
-                    localStorage.removeItem('ms_username')
+                    localStorage.removeItem('name')
                     this.$router.push('/login');
                 }
             },
@@ -43,7 +52,11 @@
 
             },
             toHome(){
-              this.$router.push('/home');
+              if(this.view === 'mhome') {
+                this.$router.push('/mhome');
+              }else{
+                this.$router.push('/bhome');
+              }
             }
         }
     }

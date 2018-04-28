@@ -1,9 +1,7 @@
 <template>
   <el-col :span="6">
     <div class="card">
-      <div class="icon">
-        <slot name="icon"></slot>
-      </div>
+      <slot name="icon"></slot>
       <div class="text">
         <span class="number">
           <slot name="number"></slot>
@@ -51,6 +49,7 @@
    text-align: center;
    border-radius: 4px 4px 4px 4px;
    box-shadow: 4px 4px 4px #8c939d;
+   background:#f1f2f7;
  }
   .icon{
     float:left;
@@ -65,10 +64,9 @@
   }
   .text{
     float:right;
-    background:#fff;
     border-radius: 0px 4px 4px 0px;
     width: 50%;
-    color: #c6cad6;
+    color: #778899;
     text-align: center;
     padding-top:20px;
   }

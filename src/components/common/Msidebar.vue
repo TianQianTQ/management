@@ -32,12 +32,12 @@
                     {
                         icon: 'iconfont t-dianpuguanli',
                         index: 'mstore',
-                        title: '店铺管理'
+                        title: '用户管理'
                     },
                     {
                         icon: 'iconfont t-shangpinguanli',
                         index: '2',
-                        title: '商品管理',
+                        title: '商户管理',
                         subs: [
                             {
                                 index: 'basetable',
@@ -52,7 +52,7 @@
                     {
                         icon: 'el-icon-date',
                         index: '3',
-                        title: '订单管理',
+                        title: '管理员管理',
                         subs: [
                             {
                                 index: 'baseform',
@@ -75,32 +75,32 @@
                     {
                         icon: 'iconfont t-huiyuanguanli',
                         index: 'basecharts',
-                        title: '会员管理'
+                        title: '客服'
                     },
                     {
                         icon: 'iconfont t-icon_yuangongguanli',
                         index: 'upload',
-                        title: '员工管理'
+                        title: '广告管理'
                     },
                     {
                       icon: 'iconfont t-permissions',
                       index: 'markdown',
-                      title: '权限管理'
+                      title: '网站设置'
                     },
                     {
                       icon: 'iconfont t-kefu',
                       index: 'vueeditor',
-                      title: '客服管理'
+                      title: '支付管理'
                     },
                     {
                       icon: 'iconfont t-gerenzhongxin',
                       index: 'baseform',
-                      title: '个人中心'
+                      title: '通知系统'
                     },
                     {
                       icon: 'iconfont t-zijinguanli',
                       index: 'vuetable',
-                      title: '资金管理'
+                      title: '个人中心'
                     },
                     {
                       icon: 'iconfont t-tongji',
@@ -118,7 +118,7 @@
               let username = localStorage.getItem('name');
               return username ? username : this.name;
             }
-        }
+        },
     }
 </script>
 

@@ -1,4 +1,4 @@
-<script src="./login.js"></script>
+<script src="./mlogin.js"></script>
 <style module src="./style.css"></style>
 <template>
   <div :class="$style.loginBg">

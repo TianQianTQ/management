@@ -52,14 +52,21 @@ export default {
         username:formLogin.username,
         password:formLogin.password
       }
-      sessionStorage.setItem('name',JSON.stringify(formLogin.username))
-       const res = await WebApi.goLogin(params);
-      if(res.code === 200){
-        this.$message('登录成功');
-        this.$router.push({
-          path:'/'
-        })
-      }
+      localStorage.setItem('name',formLogin.username)
+       //const res = await WebApi.goLogin(params);
+      // if(res.code === 200){
+      //   this.$message('登录成功');
+      //   this.$router.push({
+      //     path:'/'
+      //   })
+      // }
+      this.$message('登陆成功');
+      this.$router.push({
+        name:'mhome',
+        query:{
+          view:'administrator'
+        }
+      })
     }
   }
 }
