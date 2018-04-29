@@ -11,32 +11,32 @@
 </template>
 
 <script>
-    import capsile from '../../components/capsule/capsule';
+     import capsile from '../../components/little/capsule';
     export default {
         name: "bhome",
         data(){
           return {
             items:[
               {
-                icon:'t-goods-copy',
+                icon:'t-cap-goods',
                 number:254,
                 text:'商品数量',
                 background:'gren',
                 id:1
               },{
-                icon:'t-huiyuan',
+                icon:'t-cap-huiyuan',
                 number:14,
                 text:'会员数量',
                 background:'red',
                 id:2
               },{
-                icon:'t-dingdan',
+                icon:'t-cap-dingdan',
                 number:30,
                 text:'订单数量',
                 background:'yellow',
                 id:3
               },{
-                icon:'t-browse',
+                icon:'t-cap-browse',
                 number:3,
                 text:'浏览量',
                 background:'blue',

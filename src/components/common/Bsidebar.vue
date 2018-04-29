@@ -1,7 +1,7 @@
 <template>
     <div class="sidebar">
       <div class="logo">
-        <i class="iconfont t-guanliyuan1"></i>&nbsp;&nbsp;
+        <i class="iconfont t-side-guanliyuan1"></i>&nbsp;&nbsp;
         {{username}}
       </div>
       <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" theme="dark" unique-opened router>

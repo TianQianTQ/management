@@ -25,8 +25,10 @@
         mounted:function(){
             if(utils.getView() === 'administrator') {
               this.currentView = 'MSidebar';
-            }else{
+            }else if(utils.getView() === 'business'){
               this.currentView = 'BSidebar';
+            }else{
+              this.currentView = 'MSidebar';
             }
         }
     }

@@ -9,6 +9,9 @@ import VueLazyload from 'vue-lazyload'
 import infiniteScroll from 'vue-infinite-scroll'
 import 'element-ui/lib/theme-default/index.css'    //默认主题
  // import '../static/css/theme-green/index.css';       // 浅绿色主题
+import echarts from 'echarts'              //引入图表
+
+Vue.prototype.$echarts = echarts
 
 Vue.use(infiniteScroll)
 Vue.use(VueLazyload, {

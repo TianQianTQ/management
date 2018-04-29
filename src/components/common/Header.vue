@@ -31,8 +31,10 @@
           if(utils.getView() === 'administrator') {
             this.view = 'mhome';
             console.log(utils.getView());
-          }else{
+          }else if(utils.getView() === 'business'){
             this.view = 'bhome';
+          }else{
+            this.view = 'mhome';
           }
         },
         computed:{

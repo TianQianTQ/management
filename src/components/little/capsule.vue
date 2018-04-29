@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="6">
+  <el-col :span="6" class="col">
     <div class="card">
       <slot name="icon"></slot>
       <div class="text">
@@ -77,6 +77,9 @@
   }
   .text-text{
     font-size:12px;
+  }
+  .col{
+    margin-bottom:40px;
   }
 
 </style>
