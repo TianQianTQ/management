@@ -14,6 +14,7 @@
       <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
       <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
     </el-tabs>
+    <el-col :span="8">{{mock}}</el-col>
   </div>
 </template>
 
@@ -24,6 +25,7 @@
     name: "mhome",
     data(){
       return {
+        mock:[],
         activeName: 'second',
         items:[
           {
@@ -59,7 +61,10 @@
       first
     },
     mounted:function(){
-
+      this.$axios.get('/api/data').then(res =>{
+        this.mock = res.data;
+        console.log(this.mock);
+      })
     },
     methods:{
       handleClick(tab, event) {

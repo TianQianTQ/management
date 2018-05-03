@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 const Mlogin = resolve => require(['../views/common/Mlogin'], resolve)
 const Mregister = resolve => require(['../views/common/register'], resolve)
+
 const Bregister = resolve => require(['../views/common/Bregister'],resolve)
 const Blogin = resolve => require(['../views/common/Blogin'],resolve)
 
