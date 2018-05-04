@@ -24,11 +24,12 @@
               <count-down class="getMesCode" text="发送验证码" algin="'right'" :during="59" :active.sync="timmer" format="S 秒后重新发送" @change="timmerChange"></count-down>
             </el-button>
           </el-form-item>
-          <div class="to-register">
-            <span @click="toLogin">去登录</span>
-          </div>
+
           <el-form-item>
             <el-button type="primary" @click="goRegister">注册</el-button>
+            <div class="to-register">
+              <span @click="toLogin">去登录</span>
+            </div>
           </el-form-item>
         </el-form>
       </div>

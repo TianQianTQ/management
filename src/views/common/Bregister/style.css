@@ -15,7 +15,7 @@
   left:50%;
   margin:-230px 0 0 -180px;
   width:310px;
-  height:380px;
+  height:400px;
   padding:25px;
   box-shadow:0 0 100px rgba(0,0,0,.08);
   background:#fff;
@@ -45,15 +45,18 @@
 .to-register{
   color: #1e8bff;
   text-align:right;
-  margin:10px;
+  margin-right:10px;
+  margin-top: 10px;
   cursor:pointer;
+  display:inline-block;
+  float:right;
 }
 .to-register span{
   font-size:14px;
 }
 .getMesCode{
   font-size:14px;
-  color: #fff05a;
+  color: #1e8bff;
   text-align: right;
   float: right;
 }

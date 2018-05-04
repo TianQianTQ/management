@@ -2,7 +2,7 @@
     <div class="sidebar">
       <div class="logo">
         <i class="iconfont t-side-guanliyuan1"></i>&nbsp;&nbsp;
-        {{username}}
+        商城后台
       </div>
       <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" theme="dark" unique-opened router>
         <template v-for="item in items">
@@ -27,7 +27,6 @@
     export default {
         data() {
             return {
-                name:'tq',
                 items: [
                     {
                         icon: 'iconfont t-dianpuguanli',
@@ -113,10 +112,6 @@
         computed:{
             onRoutes(){
                 return this.$route.path.replace('/','');
-            },
-            username(){
-              let username = localStorage.getItem('name');
-              return username ? username : this.name;
             }
         },
     }

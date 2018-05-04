@@ -74,30 +74,28 @@ export default {
     async goRegister() {
 
       const formRegister = this.formRegister;
+      //验证数据完整性
+      //手机号验证  用户名验证  验证码   密码复杂性
       const params = {
-        username: this.formRegister.username,
+        username: formRegister.username,
         uuid: this.uuid,
-        captcha: this.formRegister.captcha,
-        mobile: this.formRegister.mobile,
-        password: this.formRegister.password,
+        captcha: formRegister.captcha,
+        mobile: formRegister.mobile,
+        password: formRegister.password,
       }
       localStorage.setItem('mobile', JSON.stringify(formRegister.mobile))
       const res = await WebApi.goRegister(params);
-      if (res.code === 0) {
-        this.$alert('这是一段内容', '标题名称', {
+      if(res.code !==0){
+        this.$alert(res.msg, '提示', {
           confirmButtonText: '确定',
-          callback: action => {
-            this.$message({
-              type: 'info',
-              message: `action: ${ action }`
-            });
-          }
         });
       }
-      // this.$router.push({
-      //   name: 'login'
-      // })
-      // this.$message('注册成功');
+      if(res.code===0){
+        this.$message('注册成功');
+        this.$router.push({
+            name: 'login'
+          })
+      }
     }
   }
 }

@@ -48,7 +48,7 @@ export default new Router({
          {path: '/drag', name: 'drag', component:DragList},
 
          {path:'/bhome', name:'bhome', component: Bhome},
-         {path: '/Bstore', name: 'bstore', component: Bstore},
+         {path: '/bstore', name: 'bstore', component: Bstore},
 
          {path:'/mhome', name:'mhome', component:Mhome},
        ]

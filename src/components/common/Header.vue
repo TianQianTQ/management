@@ -20,6 +20,7 @@
 </template>
 <script>
     import * as utils from '../../utils/utils';
+    import WebApi from "../../api/webapi";
     export default {
         data() {
             return {
@@ -39,15 +40,21 @@
         },
         computed:{
             username(){
-                let username = localStorage.getItem('name');
+                let username = localStorage.getItem('username');
                 return username ? username : this.name;
             }
         },
         methods:{
-            handleCommand(command) {
+          async handleCommand(command) {
                 if(command == 'loginout'){
-                    localStorage.removeItem('name')
-                    this.$router.push('/login');
+                    localStorage.removeItem('username');
+                    let res =await WebApi.goOut();
+                    if(res.code === 0) {
+                      this.$router.push('/');
+                    }else{
+                      console.log(res);
+                      this.$message('退出失败');
+                    }
                 }
             },
             toSmall(){

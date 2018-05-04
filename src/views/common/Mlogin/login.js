@@ -52,30 +52,25 @@ export default {
         mobile:formLogin.mobile,
         password:formLogin.password
       }
-      localStorage.setItem('mobile',JSON.stringify(formLogin.mobile))
-      //const res = await WebApi.goLogin(params);
-      // if(res.code === 200){
-      //   this.$message('登录成功');
-      //   this.$router.push({
-      //     path:'/'
-      //   })
-      // }
-      this.$message('登陆成功');
-      let res = 1;
-      if(res.isAdmin === 0) {
-        this.$router.push({
-          name: 'bhome',
-          query: {
-            view: 'business'
-          }
-        })
-      }else{
-        this.$router.push({
-          name: 'bhome',
-          query: {
-            view: 'admin'
-          }
-        })
+      const res = await WebApi.goLogin(params);
+      if(res.code === 0){
+        this.$message('登录成功');
+        localStorage.setItem('username',res.data.username);
+        if(res.data.isAdmin === 0) {
+          this.$router.push({
+            name: 'bhome',
+            query: {
+              view: 'business'
+            }
+          })
+        }else{
+          this.$router.push({
+            name: 'mhome',
+            query: {
+              view: 'admin'
+            }
+          })
+        }
       }
     }
   }
