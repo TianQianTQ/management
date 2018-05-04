@@ -23,7 +23,7 @@
           }
         },
         mounted:function(){
-            if(utils.getView() === 'administrator') {
+            if(utils.getView() === 'admin') {
               this.currentView = 'MSidebar';
             }else if(utils.getView() === 'business'){
               this.currentView = 'BSidebar';

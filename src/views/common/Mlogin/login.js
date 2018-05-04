@@ -7,16 +7,16 @@ export default {
     ElInput:Input,
     ElButton:Button
   },
-  name: 'blogin',
+  name: 'login',
   data () {
     return {
       formLogin:{
-        username:'',
+        mobile:'',
         password:''
       },
       rulesLogin:{
-        username:[
-          { required : true, message:'请输入用户名',trigger:'blur'}
+        mobile:[
+          { required : true, message:'请输入手机号',trigger:'blur'}
         ],
         password:[
           { required : true, message:'请输入密码',trigger:'blur'}
@@ -33,7 +33,7 @@ export default {
     toRegister(){     //去注册
       console.log("去注册");
       this.$router.replace({
-        name:'register',
+        name:'bregister',
         query:{
         }
       })
@@ -49,10 +49,10 @@ export default {
     async goLogin(){
       const formLogin = this.formLogin;
       const params = {
-        username:formLogin.username,
+        mobile:formLogin.mobile,
         password:formLogin.password
       }
-      localStorage.setItem('name',JSON.stringify(formLogin.username))
+      localStorage.setItem('mobile',JSON.stringify(formLogin.mobile))
       //const res = await WebApi.goLogin(params);
       // if(res.code === 200){
       //   this.$message('登录成功');
@@ -61,12 +61,22 @@ export default {
       //   })
       // }
       this.$message('登陆成功');
-      this.$router.push({
-        name:'bhome',
-        query:{
-          view:'business'
-        }
-      })
+      let res = 1;
+      if(res.isAdmin === 0) {
+        this.$router.push({
+          name: 'bhome',
+          query: {
+            view: 'business'
+          }
+        })
+      }else{
+        this.$router.push({
+          name: 'bhome',
+          query: {
+            view: 'admin'
+          }
+        })
+      }
     }
   }
 }

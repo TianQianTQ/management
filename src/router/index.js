@@ -2,10 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 const Mlogin = resolve => require(['../views/common/Mlogin'], resolve)
-const Mregister = resolve => require(['../views/common/register'], resolve)
 
 const Bregister = resolve => require(['../views/common/Bregister'],resolve)
-const Blogin = resolve => require(['../views/common/Blogin'],resolve)
+// const Blogin = resolve => require(['../views/common/Blogin'],resolve)
 
 const Home = resolve => require(['../components/common/Home'], resolve)
 const BaseCharts = resolve => require(['../components/page/BaseCharts'], resolve)
@@ -28,11 +27,11 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   routes: [
-    {path: '/', component: Mlogin},
-    {path: '/login', name: 'login', component: Mlogin},
-    {path: '/register', name: 'register', component: Mregister},
+    {path: '/', name:'login', component: Mlogin},
+    // {path: '/login', name: 'login', component: Mlogin},
+    // {path: '/register', name: 'register', component: Mregister},
     {path: '/business/register', name: 'bregister', component: Bregister},
-    {path: '/business/login', name: 'blogin', component:Blogin},
+    // {path: '/business/login', name: 'blogin', component:Blogin},
     {
        path: '/home',
        name: 'home',

@@ -14,9 +14,9 @@
   </el-col>
 </template>
 
-<script>
+<script scoped>
     export default {
-        name: "capsule",
+        name: "t-capsule",
         props: {
           title: {
             type: String,

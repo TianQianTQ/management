@@ -28,7 +28,7 @@
             }
         },
         mounted:function(){
-          if(utils.getView() === 'administrator') {
+          if(utils.getView() === 'admin') {
             this.view = 'mhome';
             console.log(utils.getView());
           }else if(utils.getView() === 'business'){

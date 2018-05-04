@@ -11,7 +11,7 @@
 </template>
 
 <script>
-     import capsile from '../../components/little/capsule';
+    import capsile from '../../components/little/capsule';
     export default {
         name: "bhome",
         data(){

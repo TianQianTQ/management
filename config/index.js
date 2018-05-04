@@ -28,9 +28,11 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         proxyTable: {
-          '/hello':{target:'http://www.xiyoubuy.cn'},
+          '/api-business/business/*':{
+            target:'http://xiyoubuy.cn:8901',
+          },
           '/login':{
-            target:'http://www.xiyoubuy.cn',
+            target:'http://xiyoubuy.cn:8901',
             changeOrigin: true,
           }
         },

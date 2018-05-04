@@ -35,13 +35,14 @@ export default async(type = 'GET', url = '', data = {}, method = 'fetch') => {
         value: JSON.stringify(data)
       })
     }
-
-    try {
-      let response = await fetch(url, requestConfig)
-      let responseJson = await response.json()
-    } catch (error) {
-      throw new Error(error)
-    }
+    let response = await fetch(url, requestConfig)
+    let responseJson = await response.json()
+    // try {
+    //   let response = await fetch(url, requestConfig)
+    //   let responseJson = await response.json()
+    // } catch (error) {
+    //   throw new Error(error)
+    // }
     return responseJson
   } else {
     return new Promise((resolve, reject) => {

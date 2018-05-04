@@ -15,7 +15,7 @@
   left:50%;
   margin:-230px 0 0 -180px;
   width:310px;
-  height:400px;
+  height:380px;
   padding:25px;
   box-shadow:0 0 100px rgba(0,0,0,.08);
   background:#fff;
@@ -50,4 +50,14 @@
 }
 .to-register span{
   font-size:14px;
+}
+.getMesCode{
+  font-size:14px;
+  color: #fff05a;
+  text-align: right;
+  float: right;
+}
+.getMesCodeButton{
+  float:right;
+  border:none;
 }
