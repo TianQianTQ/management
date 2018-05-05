@@ -11,7 +11,7 @@
         <el-button type="primary" icon="search" @click="searchUser" class="search">搜索</el-button>
       </el-form>
     </div>
-    <el-table :data="tableData" border style="width: 100%;">
+    <el-table :data="tableData" border style="width: 100%;" v-loading="loading">
       <el-table-column prop="username" label="用户名" width="240"></el-table-column>
       <el-table-column prop="mobile" label="手机号" width="240"></el-table-column>
       <el-table-column prop="ctime" label="注册时间" width="240"></el-table-column>
@@ -61,16 +61,16 @@
           mobile: '',
         },
         tableData: [],
-        dialogTableVisible: false,
         dialogFormVisible: false,
         formModify: {
-          name:'',
-          password:''
+          name: '',
+          password: ''
         },
-        userId:'',
-        pageTotal:null, //页面总数
+        userId: '',
+        pageTotal: null, //页面总数
         pageSize: 10,  //每页显示条数
-        pageNo:1,   //当前页
+        pageNo: 1,   //当前页
+        loading: false,  //正在加载
       };
     },
     methods: {
@@ -115,6 +115,7 @@
           });
         });
       },
+      //修改
       async goFormModify(){
         let params = {
           userId: this.userId,
@@ -132,13 +133,9 @@
       },
       //查询用户
       async searchUser(){
+        this.loading = true;
         let formSearchUser = this.formSearchUser;
         let params = {}
-        // if(pageNumber){
-        //   params.pageNo = pageNumber;
-        // }else{
-        //   params.pageNo = this.pageNo;
-        // }
         params.pageNo = this.pageNo;
         params.pageSize = this.pageSize;
         console.log(params);
@@ -150,6 +147,7 @@
         }
         const res = await WebApi.searchUser(params);
         if(res.code ===0 ){
+          this.loading = false;
           this.$message('查询成功');
            let tableData1 = res.data.list;
            this.pageTotal = res.data.total;

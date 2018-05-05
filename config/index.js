@@ -30,10 +30,6 @@ module.exports = {
         proxyTable: {
           '/api-business/business/*':{
             target:'http://xiyoubuy.cn:8901',
-          },
-          '/login':{
-            target:'http://xiyoubuy.cn:8901',
-            changeOrigin: true,
           }
         },
         // CSS Sourcemaps off by default because relative paths are "buggy"

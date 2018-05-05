@@ -10,20 +10,29 @@ class WebApi {
    * @param {password} 密码
    * @return {登录信息}
    */
-  //登录
+  // 登录
   goLogin = (params) => fetch('POST', '/api-business/business/login', params);
-  //注册
+  // 注册
   goRegister = (params) => fetch('POST','/api-business/business/register',params);
-  //获取验证码
+  // 获取验证码
   getSmsCode = (params) => fetch('GET','/api-business/business/send-captcha',params);
-  //退出
+  // 退出
   goOut = () => fetch('POST','/api-business/business/logout');
-  //搜索用户
+  // 搜索用户
   searchUser = (params) => fetch('POST','/api-business/business/users',params);
-  //修改用户信息
+  // 修改用户信息
   updateUser = (params) => fetch('POST','/api-business/business/update-user',params);
-  //删除用户
+  // 删除用户
   deleteUser = (params) => fetch('GET','/api-business/business/delete-user',params);
+  // 商铺列表
+  searchShop = (params) => fetch('POST','/api-business/business/list-shop',params);
+
+  //商铺审核
+  auditingShop = (params) => fetch('POST','/api-business/business/auditing-shop',params);
+
+  // 创建商铺
+  createShop = (params) => fetch('POST','/api-business/business/create-shop',params);
+
 }
 
 // 实例化再导出
