@@ -18,30 +18,14 @@ export function addObject(key,val){
   return data;
 }
 
-function padLeftZero(str) {
-  return ('00'+str).substr(str.length);
+//转换时间戳
+export function timestampToTime(timestamp) {
+  let date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+  let Y = date.getFullYear() + '-';
+  let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+  let D = date.getDate() + ' ';
+  let h = date.getHours() + ':';
+  let m = date.getMinutes() + ':';
+  let s = date.getSeconds();
+  return Y+M+D+h+m+s;
 }
-export function formatDate(date,fmt) {
-  if(/(y+)/.test(fmt)){
-    fmt = fmt.replace(RegExp.$1,(date.getFullYear()+'').substr(4-RegExp.$1.length));
-  }
-  let o = {
-    'M+':date.getMonth() + 1,
-    'd+':date.getDate(),
-    'h+':date.getHours(),
-    'm+':date.getMinutes(),
-    's+':date.getSeconds()
-  };
-
-  // 遍历这个对象
-  for(let k in o){
-    if(new RegExp(`(${k})`).test(fmt)){
-      // console.log(`${k}`)
-      console.log(RegExp.$1)
-      let str = o[k] + '';
-      fmt = fmt.replace(RegExp.$1,(RegExp.$1.length===1)?str:padLeftZero(str));
-    }
-  }
-  return fmt;
-};
-

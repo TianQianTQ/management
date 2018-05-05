@@ -13,7 +13,7 @@
             <el-input type="text"  v-model="formRegister.username" auto-complete="off"  placeholder="用户名"  @keyup.enter.native="sumitForm(formRegister)"></el-input>
           </el-form-item>
           <el-form-item prop="mobile">
-            <el-input type="text"  v-model="formRegister.mobile" auto-complete="off"  placeholder="手机号"  @keyup.enter.native="sumitForm(formRegister)"></el-input>
+            <el-input type="number"  v-model="formRegister.mobile" auto-complete="off"  placeholder="手机号"  @keyup.enter.native="sumitForm(formRegister)"></el-input>
           </el-form-item>
           <el-form-item prop="password">
             <el-input type="password"   v-model="formRegister.password" auto-complete="off"  placeholder="密码" @keyup.enter.native="sumitForm(formRegister)"></el-input>

@@ -19,7 +19,11 @@ class WebApi {
   //退出
   goOut = () => fetch('POST','/api-business/business/logout');
   //搜索用户
-  searchUser =() => fetch('POST','/api-business/business/users');
+  searchUser = (params) => fetch('POST','/api-business/business/users',params);
+  //修改用户信息
+  updateUser = (params) => fetch('POST','/api-business/business/update-user',params);
+  //删除用户
+  deleteUser = (params) => fetch('GET','/api-business/business/delete-user',params);
 }
 
 // 实例化再导出
