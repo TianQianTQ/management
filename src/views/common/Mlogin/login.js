@@ -39,7 +39,6 @@ export default {
       })
     },
     submitForm(name){
-      const that = this;
       this.goLogin();
     },
     beforeDestroy () {

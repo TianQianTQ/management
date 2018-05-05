@@ -16,11 +16,17 @@ const Readme = resolve => require(['../components/page/Readme'], resolve)
 const VueEditor = resolve => require(['../components/page/VueEditor'], resolve)
 const VueTable = resolve => require(['../components/page/VueTable'], resolve)
 const Upload = resolve => require(['../components/page/Upload'], resolve)
+const Login = resolve => require(['../components/page/Login'], resolve)
 
 const Bhome = resolve => require(['../views/Bpage/Bhome'], resolve)
 const Bstore = resolve => require(['../views/Bpage/Bstore'], resolve)
 
 const Mhome = resolve => require(['../views/Mpage/Mhome'], resolve)
+const Muser = resolve => require(['../views/Mpage/Muser'], resolve)
+const Mbusiness = resolve => require(['../views/Mpage/Mbusiness'], resolve)
+const Madmin = resolve => require(['../views/Mpage/Madmin'], resolve)
+const Mkefu = resolve => require(['../views/Mpage/Mkefu'], resolve)
+const Mpersonalcenter = resolve => require(['../views/Mpage/Mpersonalcenter'], resolve)
 
 Vue.use(Router)
 
@@ -46,11 +52,17 @@ export default new Router({
          {path: '/upload', name: 'upload', component:Upload},
          {path: '/basecharts', name: 'basecharts', component:BaseCharts},
          {path: '/drag', name: 'drag', component:DragList},
+         {path: '/login', name: 'dlogin', component:Login},
 
          {path:'/bhome', name:'bhome', component: Bhome},
          {path: '/bstore', name: 'bstore', component: Bstore},
 
-         {path:'/mhome', name:'mhome', component:Mhome},
+         {path:'/mhome', name:'mhome', component: Mhome},
+         {path:'/muser', name:'muser', component: Muser},
+         {path:'/madmin', name:'madmin', component: Madmin},
+         {path:'/mbusiness', name:'mbusiness', component: Mbusiness},
+         {path:'/mkefu', name:'mkefu', component: Mkefu},
+         {path:'/mpersonalcenter', name:'mpersonalcenter', component: Mpersonalcenter},
        ]
     }
   ]

@@ -18,6 +18,8 @@ class WebApi {
   getSmsCode = (params) => fetch('GET','/api-business/business/send-captcha',params);
   //退出
   goOut = () => fetch('POST','/api-business/business/logout');
+  //搜索用户
+  searchUser =() => fetch('POST','/api-business/business/users');
 }
 
 // 实例化再导出

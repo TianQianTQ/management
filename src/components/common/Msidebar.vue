@@ -29,81 +29,48 @@
             return {
                 items: [
                     {
-                        icon: 'iconfont t-dianpuguanli',
-                        index: 'mstore',
+                        icon: 'iconfont t-yonghuguanli',
+                        index: 'muser',
                         title: '用户管理'
                     },
                     {
-                        icon: 'iconfont t-shangpinguanli',
-                        index: '2',
+                        icon: 'iconfont t-yonghuguanlipitchon',
+                        index: 'mbusiness',
                         title: '商户管理',
-                        subs: [
-                            {
-                                index: 'basetable',
-                                title: '基础表格'
-                            },
-                            {
-                                index: 'vuetable',
-                                title: 'Vue表格组件'
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'el-icon-date',
-                        index: '3',
-                        title: '管理员管理',
-                        subs: [
-                            {
-                                index: 'baseform',
-                                title: '基本表单'
-                            },
-                            {
-                                index: 'vueeditor',
-                                title: '编辑器'
-                            },
-                            {
-                                index: 'markdown',
-                                title: 'markdown'
-                            },
-                            {
-                                index: 'upload',
-                                title: '文件上传'
-                            }
-                        ]
-                    },
-                    {
-                        icon: 'iconfont t-huiyuanguanli',
-                        index: 'basecharts',
-                        title: '客服'
                     },
                     {
                         icon: 'iconfont t-icon_yuangongguanli',
+                        index: 'madmin',
+                        title: '管理员管理',
+                    },
+                    {
+                        icon: 'iconfont t-kefu',
+                        index: 'mkefu',
+                        title: '客服中心'
+                    },
+                    {
+                        icon: 'iconfont t-guanggao',
                         index: 'upload',
                         title: '广告管理'
                     },
                     {
-                      icon: 'iconfont t-permissions',
-                      index: 'markdown',
-                      title: '网站设置'
-                    },
-                    {
-                      icon: 'iconfont t-kefu',
+                      icon: 'iconfont t-zhifuguanli',
                       index: 'vueeditor',
                       title: '支付管理'
                     },
                     {
-                      icon: 'iconfont t-gerenzhongxin',
+                      icon: 'iconfont t-tongzhi',
                       index: 'baseform',
                       title: '通知系统'
                     },
                     {
-                      icon: 'iconfont t-zijinguanli',
-                      index: 'vuetable',
+                      icon: 'iconfont t-gerenzhongxin',
+                      index: 'mpersonalcenter',
                       title: '个人中心'
                     },
                     {
                       icon: 'iconfont t-tongji',
-                      index: 'basetable',
+                      index: 'mhome',
                       title: '统计报表'
                     }
                 ]

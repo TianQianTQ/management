@@ -1,7 +1,6 @@
 import { Form, FormItem, Input, Button } from 'element-ui';
 import {regexp} from "../../../utils/config";
 import countDown from '../../../components/little/countDown'
-import registerData from './registerData'
 import WebApi from "../../../api/webapi";
 
 export default {

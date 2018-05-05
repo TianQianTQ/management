@@ -1,12 +1,12 @@
 <template>
   <div class="title">
-    <t-capsile  v-for="item in items" :key="item.id">
+    <capsile  v-for="item in items" :key="item.id">
       <div class="icon" slot="icon" :class="item.background">
         <i slot="icon" class="iconfont t-shangpin1-copy" :class="item.icon"></i>
       </div>
       <h1 slot="number">{{item.number}}</h1>
       <span slot="text">{{item.text}}</span>
-    </t-capsile>
+    </capsile>
     <first class="chart"></first>
     <el-tabs v-model="activeName" :click="handleClick" class="tabs">
       <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
