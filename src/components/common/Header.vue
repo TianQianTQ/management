@@ -11,7 +11,7 @@
             {{username}}
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="loginout">个人中心</el-dropdown-item>
+            <el-dropdown-item command="toUser">个人中心</el-dropdown-item>
             <el-dropdown-item command="loginout">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -26,14 +26,15 @@
             return {
                 name: 'tq',
                 view:'',
-                src:'../../../static/img/img.jpg'
+                src:'../../../static/img/img.jpg',
+                isAdmin:null
             }
         },
         mounted:function(){
-          if(utils.getView() === 'admin') {
+          this.isAdmin = localStorage.getItem('isAdmin');
+          if(this.isAdmin === '1') {
             this.view = 'mhome';
-            console.log(utils.getView());
-          }else if(utils.getView() === 'business'){
+          }else if(this.isAdmin === '0'){
             this.view = 'bhome';
           }else{
             this.view = 'mhome';
@@ -53,6 +54,8 @@
           async handleCommand(command) {
                 if(command == 'loginout'){
                     localStorage.removeItem('username');
+                    localStorage.removeItem('businessId');
+                    localStorage.removeItem('isAdmin');
                     let res =await WebApi.goOut();
                     if(res.code === 0) {
                       this.$router.push('/');
@@ -60,13 +63,24 @@
                       console.log(res);
                       this.$message('退出失败');
                     }
+                }else if(command == 'toUser'){
+                  this.isAdmin = localStorage.getItem('isAdmin');
+                  if(this.isAdmin === '0'){
+                    this.$router.push('bperson');
+                  }else if(this.isAdmin === '1'){
+                    this.$router.push('muser');
+                  }else{
+                    this.$router.push('muser');
+                  }
                 }
             },
             toSmall(){
 
             },
             toHome(){
-              if(this.view === 'mhome') {
+              this.isAdmin = localStorage.getItem('isAdmin');
+              console.log(this.isAdmin);
+              if(this.isAdmin === '1') {
                 this.$router.push('/mhome');
               }else{
                 this.$router.push('/bhome');

@@ -1,85 +1,241 @@
 <template>
   <div>
-    <div class="crumbs">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item><i class="iconfont t-dianpuguanli"></i> 店铺管理</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>
-    <div class="form-box">
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="店铺名称">
-          <el-input v-model="form.name"></el-input>
+    <div v-if="hasStore">
+      <el-form ref="formModify" :model="formModify" label-width="100px" class="form-create">
+        <el-form-item label="店铺名称" class="shop-name">
+          <p class="modify-p" v-show="!toModify">{{formModify.name}}</p>
+          <el-input v-model="formModify.name" v-show="toModify"></el-input>
+        </el-form-item>
+        <el-form-item label="经营人姓名" class="shop-name ">
+          <p class="modify-p" v-show="!toModify">{{formModify.username}}</p>
+          <el-input v-model="formModify.username" v-show="toModify"></el-input>
         </el-form-item>
         <el-form-item label="主营类目">
-          <el-select v-model="form.region" placeholder="请选择">
-            <el-option key="bbk" label="" value="bbk"></el-option>
-            <el-option key="xtc" label="选项二" value="xtc"></el-option>
-            <el-option key="imoo" label="选项三" value="imoo"></el-option>
+          <p class="modify-p" v-show="!toModify">{{formModify.region}}</p>
+          <el-select v-model="formModify.region" v-show="toModify" clearable placeholder="请选择主营类目" class="form-option">
+            <el-option
+              v-for="item in labelType"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="日期时间">
-          <el-col :span="11">
-            <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
-          </el-col>
-          <el-col class="line" :span="2">-</el-col>
-          <el-col :span="11">
-            <el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
-          </el-col>
+        <el-form-item label="所在地区">
+          <p class="modify-p" v-show="!toModify">{{formModify.space}}</p>
+          <el-select v-model="form.space" v-show="toModify" clearable placeholder="请选择地区" class="form-option">
+            <el-option
+              v-for="item in labelSpare"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="选择开关">
-          <el-switch on-text="" off-text="" v-model="form.delivery"></el-switch>
+        <el-form-item label="门店地址" class="shop-name shop-adress">
+          <p class="modify-p" v-show="!toModify">{{formModify.address}}</p>
+          <el-input v-model="form.address" v-show="toModify"></el-input>
         </el-form-item>
-        <el-form-item label="多选框">
-          <el-checkbox-group v-model="form.type">
-            <el-checkbox label="选项一" name="type"></el-checkbox>
-            <el-checkbox label="选项二" name="type"></el-checkbox>
-            <el-checkbox label="选项三" name="type"></el-checkbox>
-          </el-checkbox-group>
+        <el-form-item label="店铺公告" class="shop-name ">
+          <p class="modify-p" v-show="!toModify">{{formModify.desc}}</p>
+          <el-input type="textarea" v-show="toModify" v-model="formModify.desc"></el-input>
         </el-form-item>
-        <el-form-item label="单选框">
-          <el-radio-group v-model="form.resource">
-            <el-radio label="选项一"></el-radio>
-            <el-radio label="选项二"></el-radio>
-            <el-radio label="选项三"></el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="文本框">
-          <el-input type="textarea" v-model="form.desc"></el-input>
+        <el-form-item label="发件地址" class="shop-name">
+          <p class="modify-p" v-show="!toModify">{{formModify.goodsaddress}}</p>
+          <el-input v-model="formModify.goodsaddress" v-show="toModify"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">提交</el-button>
-          <el-button>取消</el-button>
+          <el-button type="primary" @click="onSubmitModify" v-show="toModify">完成</el-button>
+          <el-button type="primary" @click="onModify" v-show="!toModify">编辑</el-button>
         </el-form-item>
       </el-form>
     </div>
-
+    <div v-else>
+      <p  v-show="!toCreate">您还未创建商铺，去<el-button type="primary" @click="toCreate=true">创建</el-button></p>
+      <el-form ref="form" :model="form" label-width="100px" v-show="toCreate" class="form-create">
+        <el-form-item label="店铺名称" class="shop-name">
+          <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item label="经营人姓名" class="shop-name ">
+          <el-input v-model="form.username"></el-input>
+        </el-form-item>
+        <el-form-item label="主营类目">
+          <el-select v-model="form.region" clearable placeholder="请选择主营类目" class="form-option">
+            <el-option
+              v-for="item in labelType"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="所在地区">
+          <el-select v-model="form.space" clearable placeholder="请选择地区" class="form-option">
+            <el-option
+              v-for="item in labelSpare"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="门店地址" class="shop-name shop-adress">
+          <el-input v-model="form.address"></el-input>
+        </el-form-item>
+        <el-form-item label="店铺公告" class="shop-name ">
+          <el-input type="textarea" v-model="form.desc"></el-input>
+        </el-form-item>
+        <el-form-item label="发件地址" class="shop-name">
+          <el-input v-model="form.goodsaddress"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">立即创建</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 
 <script>
+
     export default {
-        name: "Mstore",
+        name: "bstore",
         data: function(){
           return {
-            form: {
-              name: '',
-              region: '',
-              date1: '',
-              date2: '',
-              delivery: true,
-              type: ['选项一'],
-              resource: '选项二',
-              desc: ''
-            }
+            currentView: '',
+            hasStore: true,  // 判断是否有店铺
+            toCreate: false,  // 创建店铺
+            toModify: false,   // 去编辑
+            form: {           // 表单数据
+              name: '',       //  店铺名称
+              username:'',    //  经营人姓名
+              region: '',     //  主营类目
+              space:'',       //  所在地区
+              address:'',      //  店铺地址
+              desc: '',       //  店铺公告
+              goodsaddress:'', //  发件地址
+            },
+            formModify: {           // 可编辑
+              name: '田家的小烽仔',       //  店铺名称
+              username:'伊人笑桃花酒',    //  经营人姓名
+              region: '宠物',     //  主营类目
+              space:'西安',       //  所在地区
+              address:'西安邮电大学',      //  店铺地址
+              desc: '欢迎来到小店',       //  店铺公告
+              goodsaddress:'西安邮电大学', //  发件地址
+            },
+                                // 选择主营类目
+            labelType:[
+              {
+                value: '选项1',
+                label: '书籍'
+              }, {
+                value: '选项2',
+                label: '电子产品'
+              },
+              {
+                value: '选项3',
+                label: '服饰'
+              }, {
+                value: '选项4',
+                label: '生活用品'
+              },
+              {
+                value: '选项5',
+                label: '宠物'
+              }
+            ],
+                                // 选择地区
+            labelSpare:[
+              {
+                value: '选项1',
+                label: '北京'
+              }, {
+                value: '选项2',
+                label: '上海'
+              },
+              {
+                value: '选项3',
+                label: '广州'
+              }, {
+                value: '选项4',
+                label: '西安'
+              },
+              {
+                value: '选项5',
+                label: '成都'
+              }
+            ],
+
           }
         },
         methods: {
+          // 创建店铺
           onSubmit() {
-            this.$message.success('提交成功！');
+            let form  = this.form;
+            let params = {    //  需要提交的数据
+              name: form.name,
+              username: form.username,
+              region: form.region,
+
+            }
+            let res = {};
+            res.code = 0 ;
+            if(res.code ===0) {
+              this.$message({
+                type: 'success',
+                message: '创建成功!'
+              });
+              this.hasStore = true;
+              this.toCreate = false;
+            }else{
+              this.$message(res.msg);
+            }
+          },
+          // 修改店铺
+          onModify(){
+              this.toModify = true;
+              this.$message('修改');
+          },
+          //  完成修改
+          onSubmitModify(){
+            this.toModify = false;
+            this.$message('完成修改');
           }
         }
     }
 </script>
 
 <style scoped>
+  .form-create{
+    width:45%;
+  }
+  .shop-name{
+    width:100%;
+  }
+  .form-option{
+    float:left;
+  }
+  .change-input{
+    border:none;
+  }
+  .modify-p{
+    text-align:left;
+  }
+
+
+  .bg-purple {
+    background: #d3dce6;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+  }
+  .el-col{
+    height:50px;
+    line-height:50px;
+  }
 </style>

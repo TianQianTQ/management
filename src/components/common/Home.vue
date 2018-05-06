@@ -19,17 +19,19 @@
         },
         data(){
           return{
-            currentView: ''
+            currentView: '',
+            isAdmin:null
           }
         },
         mounted:function(){
-            if(utils.getView() === 'admin') {
-              this.currentView = 'MSidebar';
-            }else if(utils.getView() === 'business'){
-              this.currentView = 'BSidebar';
-            }else{
-              this.currentView = 'MSidebar';
-            }
+          this.isAdmin = localStorage.getItem('isAdmin');
+          if(this.isAdmin === '1') {
+            this.currentView = 'MSidebar';
+          }else if(this.isAdmin === '0'){
+            this.currentView = 'BSidebar';
+          }else{
+            this.currentView = 'MSidebar';
+          }
         }
     }
 </script>

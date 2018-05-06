@@ -60,6 +60,7 @@ export default {
         localStorage.setItem('username',res.data.username);
         localStorage.setItem('personUrl',res.data.url);
         localStorage.setItem('businessId',res.data.businessId);
+        localStorage.setItem('isAdmin',res.data.isAdmin);
         if(res.data.isAdmin === 0) {
           this.$router.push({
             name: 'bhome',
