@@ -113,9 +113,6 @@
         activeName: 'first',  //正在显示的页面
         pageState: null,    //当前页编号
         dataAll: [],
-        dataAlready: [],
-        dataBeing: [],
-        dataOppose: [],
         shopId: '',       //商户
         pageTotal: null, //页面总数
         pageSize: 10,  //每页显示条数
