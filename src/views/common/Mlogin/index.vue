@@ -8,7 +8,7 @@
           <img src="../../../assets/logo.png">
           <span :class="$style.span">旧物志</span>
         </div>
-        <el-form :model="formLogin" :rules="rulesLogin" ref="formLogin">
+        <el-form :model="formLogin" :rules="rulesLogin" ref="formLogin" v-loading="loading">
           <el-form-item prop="mobile">
             <el-input type="number" v-model="formLogin.mobile" auto-complete="off"  placeholder="手机号" @keyup.enter.native="sumitForm(formLogin)"></el-input>
           </el-form-item>

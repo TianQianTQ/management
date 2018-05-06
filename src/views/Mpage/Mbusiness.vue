@@ -123,6 +123,9 @@
         loading: false,  //正在加载
       }
     },
+    mounted:function(){
+      this.searchBusiness();
+    },
     methods: {
       handleClick(tab, event) {
         // console.log(tab.label);
@@ -153,6 +156,7 @@
           };
           let res = await WebApi.auditingShop(params);
           if(res.code ===0) {
+            this.searchBusiness();
             this.$message({
               type: 'success',
               message: '审核通过!'
@@ -160,7 +164,6 @@
           }else{
             this.$message(res.msg);
           }
-          this.searchBusiness();
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -182,6 +185,7 @@
           };
           let res = await WebApi.auditingShop(params);
           if(res.code ===0) {
+            this.searchBusiness();
             this.$message({
               type: 'success',
               message: '已驳回!'
@@ -189,7 +193,6 @@
           }else{
             this.$message(res.msg);
           }
-          this.searchBusiness();
         }).catch(() => {
           this.$message({
             type: 'info',

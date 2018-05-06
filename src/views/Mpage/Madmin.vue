@@ -19,8 +19,8 @@
         <el-table-column prop="ctime" label="注册时间" width="240"></el-table-column>
         <el-table-column prop="utime" label="上次修改时间" width="240"></el-table-column>
         <el-table-column label="操作" width="200">
-          <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">删除</el-button>
+          <template slot-scope="scope" prop="businessId">
+            <el-button @click="deleteAdmin(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -54,6 +54,8 @@
 </template>
 
 <script>
+  import WebApi from '../../api/webapi';
+  import * as utils from '../../utils/utils';
   export default {
     name:'madmin',
     data() {
@@ -64,10 +66,10 @@
         },
         createAdmin:false,
         loading:false,
-        userId: '',
-        pageTotal: null, //页面总数
-        pageSize: 10,  //每页显示条数
-        pageNo: 1,   //当前页
+        businessId: '',     // 管理员ID
+        pageTotal: null, // 页面总数
+        pageSize: 10,  // 每页显示条数
+        pageNo: 1,   // 当前页
         tableData:[], // 表格数据
         addAdmin: {
           username: '',
@@ -87,13 +89,42 @@
         },
       }
     },
+    mounted:function(){
+      this.search();
+    },
     methods: {
       //改变页码
       handleCurrentChange(val){
         this.pageNo = val;
       },
-      handleClick(row) {
-        console.log(row);
+      // 删除
+      deleteAdmin(row) {
+        this.businessId = row.businessId;
+        this.$confirm('确认删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then( async() => {
+          let param = {
+            businessId:row.businessId
+          }
+          let res =await WebApi.deleteAdmin(param);
+          if(res.code ===0) {
+            this.search();
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+            this.search();
+          }else{
+            this.$message(res.msg);
+          }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       },
       //创建管理员
       create(){
@@ -108,12 +139,12 @@
         params.pageNo = this.pageNo;    //传递页码（第一页）
         params.pageSize = this.pageSize;
         if(formAdmin.name !== ''){
-          params.name = formAdmin.name;
+          params.username = formAdmin.name;
         }
         if(formAdmin.mobile !== ''){
           params.mobile = formAdmin.mobile;
         }
-        const res = await WebApi.searchShop(params);
+        const res = await WebApi.adminList(params);
         if(res.code === 0 ){
           this.loading = false;
           this.$message('查询成功');
@@ -127,16 +158,32 @@
         }else{
           this.$message(res.msg);
         }
-        this.$message('搜索');
-        //请求接口
       },
-      //提交搜索表单
+      // 提交搜索表单
       sumitForm(name){
         this.goAddAdmin();
       },
-      goAddAdmin(){
-        this.$message('提交');
+      // 添加管理员
+      async goAddAdmin(){
+        let params = {
+          mobile: this.addAdmin.mobile,
+          username: this.addAdmin.username,
+          password: this.addAdmin.password
+        }
+        let res = await WebApi.createAdmin(params);
+        if(res.code === 0){
+          this.$message({
+            message: '添加成功',
+            type: 'success'
+          });
+          this.createAdmin = false;
+          this.search();
+        }else{
+          this.$message(res.msg);
+        }
+        console.log(params);
       },
+      // 改变页码
       handleCurrentChange(val){
         this.pageNo = val;
         this.searchUser();

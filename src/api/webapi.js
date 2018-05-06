@@ -29,6 +29,14 @@ class WebApi {
 
   //商铺审核
   auditingShop = (params) => fetch('POST','/api-business/business/auditing-shop',params);
+  // 管理员列表
+  adminList = (params) => fetch('POST','/api-business/business/list',params);
+  // 创建管理员
+  createAdmin = (params) => fetch('POST','/api-business/business/create',params);
+  // 删除管理员
+  deleteAdmin = (params) => fetch('GET','/api-business/business/delete-admin',params);
+  // 修改个人信息
+  updatePerson = (params) => fetch('POST','/api-business/business/update-person',params);
 
   // 创建商铺
   createShop = (params) => fetch('POST','/api-business/business/create-shop',params);

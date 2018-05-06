@@ -7,7 +7,7 @@
       <div class="user-info">
         <el-dropdown trigger="click" @command="handleCommand">
           <span class="el-dropdown-link">
-            <img class="user-logo" src="../../../static/img/img.jpg">
+            <img class="user-logo" :src=url>
             {{username}}
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -25,7 +25,8 @@
         data() {
             return {
                 name: 'tq',
-                view:''
+                view:'',
+                src:'../../../static/img/img.jpg'
             }
         },
         mounted:function(){
@@ -42,6 +43,10 @@
             username(){
                 let username = localStorage.getItem('username');
                 return username ? username : this.name;
+            },
+            url(){
+                let url = localStorage.getItem('personUrl');
+                return url ? url : this.src
             }
         },
         methods:{

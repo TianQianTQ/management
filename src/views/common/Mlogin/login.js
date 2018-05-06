@@ -22,7 +22,8 @@ export default {
           { required : true, message:'请输入密码',trigger:'blur'}
         ]
       },
-    showLogin:false,
+      showLogin:false,
+      loading:false,
     }
   },
   mounted(){
@@ -46,6 +47,7 @@ export default {
       if (that.interval) clearInterval(that.interval);
     },
     async goLogin(){
+      this.loading = true;
       const formLogin = this.formLogin;
       const params = {
         mobile:formLogin.mobile,
@@ -53,8 +55,11 @@ export default {
       }
       const res = await WebApi.goLogin(params);
       if(res.code === 0){
+        this.loading = false;
         this.$message('登录成功');
         localStorage.setItem('username',res.data.username);
+        localStorage.setItem('personUrl',res.data.url);
+        localStorage.setItem('businessId',res.data.businessId);
         if(res.data.isAdmin === 0) {
           this.$router.push({
             name: 'bhome',
@@ -70,6 +75,9 @@ export default {
             }
           })
         }
+      }else{
+        this.loading = false;
+        this.$message(res.msg);
       }
     }
   }

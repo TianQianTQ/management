@@ -73,6 +73,9 @@
         loading: false,  //正在加载
       };
     },
+    mounted:function(){
+      this.searchUser();
+    },
     methods: {
       //提交用户
       submitForm(name){
@@ -90,6 +93,7 @@
       },
       //删除
       handleDelete(row){
+        this.userId = row.userId;
         this.$confirm('确认删除?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
