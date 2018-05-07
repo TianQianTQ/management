@@ -1,69 +1,43 @@
 <template>
   <div class="table">
     <div class="handle-box">
-      <el-form ref="formAdmin" :model="formAdmin" label-width="80px" inline>
+      <el-form ref="formOrder" :model="formOrder" label-width="80px" inline>
         <el-form-item label="用户名">
-          <el-input v-model="formAdmin.goodsName" @keyup.enter.native="submitForm(formAdmin)"></el-input>
+          <el-input v-model="formOrder.userName" @keyup.enter.native="submitForm(formOrder)"></el-input>
         </el-form-item>
         <el-form-item label="商品名">
-          <el-input v-model="formAdmin.goodsType" @keyup.enter.native="submitForm(formAdmin)"></el-input>
+          <el-input v-model="formOrder.goodsName" @keyup.enter.native="submitForm(formOrder)"></el-input>
         </el-form-item>
-        <el-button type="primary" icon="search" @click="search" class="search">搜索</el-button>
+        <el-button type="primary" icon="search" @click="searchOrder" class="search">搜索</el-button>
       </el-form>
     </div>
     <div class="madmin-body">
       <el-tabs v-model="activeName" @tab-click="handleClick" class="tabs">
         <el-tab-pane label="全部" name="first">
           <el-table :data="dataAll" border style="width: 100%;" v-loading="loading">
-            <el-table-column prop="goodsName" label="商品名称" width="120"></el-table-column>
-            <el-table-column prop="goodsType" label="分类" width="120"></el-table-column>
-            <el-table-column prop="price" label="价格" width="120"></el-table-column>
-            <el-table-column prop="number" label="库存" width="120"></el-table-column>
-            <el-table-column prop="volume" label="销量" width="100"></el-table-column>
-            <el-table-column prop="isNew" label="是否新品" width="100"></el-table-column>
+            <el-table-column prop="goodsName" label="用户名" width="140"></el-table-column>
+            <el-table-column prop="goodsType" label="订单总价" width="120"></el-table-column>
+            <el-table-column prop="price" label="运费" width="120"></el-table-column>
             <el-table-column prop="ctime" label="创建时间" width="160"></el-table-column>
             <el-table-column prop="utime" label="修改时间" width="160"></el-table-column>
-            <el-table-column label="操作" width="170" prop="goodsId">
+            <el-table-column prop="address" label="收货地址" width="140"></el-table-column>
+            <el-table-column prop="message" label="买家留言" width="160"></el-table-column>
+            <el-table-column prop="orderId" label="订单详情" width="160">
               <template slot-scope="scope">
-                <el-button @click="auditingEdit1(scope.row)" type="text" size="small">编辑</el-button>
-                <el-button v-show="isShelf" @click="auditingUp(scope.row)" type="text" size="small">上架</el-button>
-                <el-button v-show="!isShelf" @click="auditingDown(scope.row)" type="text" size="small">下架</el-button>
-                <el-button  @click="auditingDelete(scope.row)" type="text" size="small">删除</el-button>
+                <el-button @click="viewDetails1(scope.row)" type="text" size="small">查看详情</el-button>
               </template>
             </el-table-column>
           </el-table>
-          <el-dialog title="商品信息" :visible.sync="dialogFormVisible1" class="form-modify">
-            <el-form :model="formModify" ref="formModify" label-width="80px">
-              <el-form-item label="商品名称" >
-                <el-input type="text" v-model="formModify.name" ></el-input>
-              </el-form-item>
-              <el-form-item label="分类" >
-                <el-select v-model="formModify.region"  clearable placeholder="请选择商品类型" class="form-option">
-                  <el-option
-                    v-for="item in labelType"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="价格" >
-                <el-input type="text" v-model="formModify.price" ></el-input>
-              </el-form-item>
-              <el-form-item label="是否新品" >
-                <el-select v-model="formModify.isNew"  clearable placeholder="请选择" class="form-option">
-                  <el-option
-                    v-for="item in labelTypeIsNew"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-form>
+          <el-dialog title="订单信息" :visible.sync="dialogFormVisible1" class="form-modify">
+            <el-table :data="orderData" style="width: 100%" >
+              <el-table-column prop="goodsName" label="商品名称" width="120"></el-table-column>
+              <el-table-column prop="goodsType" label="分类" width="120"></el-table-column>
+              <el-table-column prop="price" label="价格" width="120"></el-table-column>
+              <el-table-column prop="ctime" label="创建时间" width="160"></el-table-column>
+              <el-table-column prop="utime" label="修改时间" width="160"></el-table-column>
+            </el-table>
             <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisible1 = false">取 消</el-button>
-              <el-button type="primary" @click="goFormModify">确 定</el-button>
+              <el-button type="primary" @click="dialogFormVisible1 = false">关闭</el-button>
             </div>
           </el-dialog>
           <div class="block">
@@ -78,54 +52,29 @@
         </el-tab-pane>
         <el-tab-pane label="待付款" name="second">
           <el-table :data="dataAll" border style="width: 100%;" v-loading="loading">
-            <el-table-column prop="goodsName" label="商品名称" width="120"></el-table-column>
-            <el-table-column prop="goodsType" label="分类" width="120"></el-table-column>
-            <el-table-column prop="price" label="价格" width="120"></el-table-column>
-            <el-table-column prop="number" label="库存" width="120"></el-table-column>
-            <el-table-column prop="volume" label="销量" width="100"></el-table-column>
-            <el-table-column prop="isNew" label="是否新品" width="100"></el-table-column>
+            <el-table-column prop="goodsName" label="用户名" width="140"></el-table-column>
+            <el-table-column prop="goodsType" label="订单总价" width="120"></el-table-column>
+            <el-table-column prop="price" label="运费" width="120"></el-table-column>
             <el-table-column prop="ctime" label="创建时间" width="160"></el-table-column>
             <el-table-column prop="utime" label="修改时间" width="160"></el-table-column>
-            <el-table-column label="操作" width="170" prop="goodsId">
+            <el-table-column prop="address" label="收货地址" width="140"></el-table-column>
+            <el-table-column prop="message" label="买家留言" width="160"></el-table-column>
+            <el-table-column prop="orderId" label="订单详情" width="160">
               <template slot-scope="scope">
-                <el-button @click="auditingEdit2(scope.row)" type="text" size="small">编辑</el-button>
-                <el-button  @click="auditingDown(scope.row)" type="text" size="small">下架</el-button>
-                <el-button  @click="auditingDelete(scope.row)" type="text" size="small">删除</el-button>
+                <el-button @click="viewDetails2(scope.row)" type="text" size="small">查看详情</el-button>
               </template>
             </el-table-column>
           </el-table>
-          <el-dialog title="商品信息" :visible.sync="dialogFormVisible2" class="form-modify">
-            <el-form :model="formModify" ref="formModify" label-width="80px">
-              <el-form-item label="商品名称" >
-                <el-input type="text" v-model="formModify.name" ></el-input>
-              </el-form-item>
-              <el-form-item label="分类" >
-                <el-select v-model="formModify.region"  clearable placeholder="请选择商品类型" class="form-option">
-                  <el-option
-                    v-for="item in labelType"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="价格" >
-                <el-input type="text" v-model="formModify.price" ></el-input>
-              </el-form-item>
-              <el-form-item label="是否新品" >
-                <el-select v-model="formModify.isNew"  clearable placeholder="请选择" class="form-option">
-                  <el-option
-                    v-for="item in labelTypeIsNew"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-form>
+          <el-dialog title="订单信息" :visible.sync="dialogFormVisible2" class="form-modify">
+            <el-table :data="orderData" style="width: 100%" >
+              <el-table-column prop="goodsName" label="商品名称" width="120"></el-table-column>
+              <el-table-column prop="goodsType" label="分类" width="120"></el-table-column>
+              <el-table-column prop="price" label="价格" width="120"></el-table-column>
+              <el-table-column prop="ctime" label="创建时间" width="160"></el-table-column>
+              <el-table-column prop="utime" label="修改时间" width="160"></el-table-column>
+            </el-table>
             <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisible2 = false">取 消</el-button>
-              <el-button type="primary" @click="goFormModify">确 定</el-button>
+              <el-button type="primary" @click="dialogFormVisible2 = false">关闭</el-button>
             </div>
           </el-dialog>
           <div class="block">
@@ -140,54 +89,29 @@
         </el-tab-pane>
         <el-tab-pane label="待发货" name="third">
           <el-table :data="dataAll" border style="width: 100%;" v-loading="loading">
-            <el-table-column prop="goodsName" label="商品名称" width="120"></el-table-column>
-            <el-table-column prop="goodsType" label="分类" width="120"></el-table-column>
-            <el-table-column prop="price" label="价格" width="120"></el-table-column>
-            <el-table-column prop="number" label="库存" width="120"></el-table-column>
-            <el-table-column prop="volume" label="销量" width="100"></el-table-column>
-            <el-table-column prop="isNew" label="是否新品" width="100"></el-table-column>
+            <el-table-column prop="goodsName" label="用户名" width="140"></el-table-column>
+            <el-table-column prop="goodsType" label="订单总价" width="120"></el-table-column>
+            <el-table-column prop="price" label="运费" width="120"></el-table-column>
             <el-table-column prop="ctime" label="创建时间" width="160"></el-table-column>
             <el-table-column prop="utime" label="修改时间" width="160"></el-table-column>
-            <el-table-column label="操作" width="170" prop="goodsId">
+            <el-table-column prop="address" label="收货地址" width="140"></el-table-column>
+            <el-table-column prop="message" label="买家留言" width="160"></el-table-column>
+            <el-table-column prop="orderId" label="订单详情" width="160">
               <template slot-scope="scope">
-                <el-button @click="auditingEdit3(scope.row)" type="text" size="small">编辑</el-button>
-                <el-button  @click="auditingUp(scope.row)" type="text" size="small">上架</el-button>
-                <el-button  @click="auditingDelete(scope.row)" type="text" size="small">删除</el-button>
+                <el-button @click="viewDetails3(scope.row)" type="text" size="small">查看详情</el-button>
               </template>
             </el-table-column>
           </el-table>
-          <el-dialog title="商品信息" :visible.sync="dialogFormVisible3" class="form-modify">
-            <el-form :model="formModify" ref="formModify" label-width="80px">
-              <el-form-item label="商品名称" >
-                <el-input type="text" v-model="formModify.name" ></el-input>
-              </el-form-item>
-              <el-form-item label="分类" >
-                <el-select v-model="formModify.region"  clearable placeholder="请选择商品类型" class="form-option">
-                  <el-option
-                    v-for="item in labelType"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="价格" >
-                <el-input type="text" v-model="formModify.price" ></el-input>
-              </el-form-item>
-              <el-form-item label="是否新品" >
-                <el-select v-model="formModify.isNew"  clearable placeholder="请选择" class="form-option">
-                  <el-option
-                    v-for="item in labelTypeIsNew"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-form>
+          <el-dialog title="订单信息" :visible.sync="dialogFormVisible3" class="form-modify">
+            <el-table :data="orderData" style="width: 100%" >
+              <el-table-column prop="goodsName" label="商品名称" width="120"></el-table-column>
+              <el-table-column prop="goodsType" label="分类" width="120"></el-table-column>
+              <el-table-column prop="price" label="价格" width="120"></el-table-column>
+              <el-table-column prop="ctime" label="创建时间" width="160"></el-table-column>
+              <el-table-column prop="utime" label="修改时间" width="160"></el-table-column>
+            </el-table>
             <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisible3 = false">取 消</el-button>
-              <el-button type="primary" @click="goFormModify">确 定</el-button>
+              <el-button type="primary" @click="dialogFormVisible3 = false">关闭</el-button>
             </div>
           </el-dialog>
           <div class="block">
@@ -200,56 +124,31 @@
             </el-pagination>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="待收货" name="third">
+        <el-tab-pane label="待收货" name="fourth">
           <el-table :data="dataAll" border style="width: 100%;" v-loading="loading">
-            <el-table-column prop="goodsName" label="商品名称" width="120"></el-table-column>
-            <el-table-column prop="goodsType" label="分类" width="120"></el-table-column>
-            <el-table-column prop="price" label="价格" width="120"></el-table-column>
-            <el-table-column prop="number" label="库存" width="120"></el-table-column>
-            <el-table-column prop="volume" label="销量" width="100"></el-table-column>
-            <el-table-column prop="isNew" label="是否新品" width="100"></el-table-column>
+            <el-table-column prop="goodsName" label="用户名" width="140"></el-table-column>
+            <el-table-column prop="goodsType" label="订单总价" width="120"></el-table-column>
+            <el-table-column prop="price" label="运费" width="120"></el-table-column>
             <el-table-column prop="ctime" label="创建时间" width="160"></el-table-column>
             <el-table-column prop="utime" label="修改时间" width="160"></el-table-column>
-            <el-table-column label="操作" width="170" prop="goodsId">
+            <el-table-column prop="address" label="收货地址" width="140"></el-table-column>
+            <el-table-column prop="message" label="买家留言" width="160"></el-table-column>
+            <el-table-column prop="orderId" label="订单详情" width="160">
               <template slot-scope="scope">
-                <el-button @click="auditingEdit3(scope.row)" type="text" size="small">编辑</el-button>
-                <el-button  @click="auditingUp(scope.row)" type="text" size="small">上架</el-button>
-                <el-button  @click="auditingDelete(scope.row)" type="text" size="small">删除</el-button>
+                <el-button @click="viewDetails4(scope.row)" type="text" size="small">查看详情</el-button>
               </template>
             </el-table-column>
           </el-table>
-          <el-dialog title="商品信息" :visible.sync="dialogFormVisible3" class="form-modify">
-            <el-form :model="formModify" ref="formModify" label-width="80px">
-              <el-form-item label="商品名称" >
-                <el-input type="text" v-model="formModify.name" ></el-input>
-              </el-form-item>
-              <el-form-item label="分类" >
-                <el-select v-model="formModify.region"  clearable placeholder="请选择商品类型" class="form-option">
-                  <el-option
-                    v-for="item in labelType"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="价格" >
-                <el-input type="text" v-model="formModify.price" ></el-input>
-              </el-form-item>
-              <el-form-item label="是否新品" >
-                <el-select v-model="formModify.isNew"  clearable placeholder="请选择" class="form-option">
-                  <el-option
-                    v-for="item in labelTypeIsNew"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-form>
+          <el-dialog title="订单信息" :visible.sync="dialogFormVisible4" class="form-modify">
+            <el-table :data="orderData" style="width: 100%" >
+              <el-table-column prop="goodsName" label="商品名称" width="120"></el-table-column>
+              <el-table-column prop="goodsType" label="分类" width="120"></el-table-column>
+              <el-table-column prop="price" label="价格" width="120"></el-table-column>
+              <el-table-column prop="ctime" label="创建时间" width="160"></el-table-column>
+              <el-table-column prop="utime" label="修改时间" width="160"></el-table-column>
+            </el-table>
             <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisible3 = false">取 消</el-button>
-              <el-button type="primary" @click="goFormModify">确 定</el-button>
+              <el-button type="primary" @click="dialogFormVisible4 = false">关闭</el-button>
             </div>
           </el-dialog>
           <div class="block">
@@ -262,56 +161,31 @@
             </el-pagination>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="交易成功" name="third">
+        <el-tab-pane label="交易成功" name="fifth">
           <el-table :data="dataAll" border style="width: 100%;" v-loading="loading">
-            <el-table-column prop="goodsName" label="商品名称" width="120"></el-table-column>
-            <el-table-column prop="goodsType" label="分类" width="120"></el-table-column>
-            <el-table-column prop="price" label="价格" width="120"></el-table-column>
-            <el-table-column prop="number" label="库存" width="120"></el-table-column>
-            <el-table-column prop="volume" label="销量" width="100"></el-table-column>
-            <el-table-column prop="isNew" label="是否新品" width="100"></el-table-column>
+            <el-table-column prop="goodsName" label="用户名" width="140"></el-table-column>
+            <el-table-column prop="goodsType" label="订单总价" width="120"></el-table-column>
+            <el-table-column prop="price" label="运费" width="120"></el-table-column>
             <el-table-column prop="ctime" label="创建时间" width="160"></el-table-column>
             <el-table-column prop="utime" label="修改时间" width="160"></el-table-column>
-            <el-table-column label="操作" width="170" prop="goodsId">
+            <el-table-column prop="address" label="收货地址" width="140"></el-table-column>
+            <el-table-column prop="message" label="买家留言" width="160"></el-table-column>
+            <el-table-column prop="orderId" label="订单详情" width="160">
               <template slot-scope="scope">
-                <el-button @click="auditingEdit3(scope.row)" type="text" size="small">编辑</el-button>
-                <el-button  @click="auditingUp(scope.row)" type="text" size="small">上架</el-button>
-                <el-button  @click="auditingDelete(scope.row)" type="text" size="small">删除</el-button>
+                <el-button @click="viewDetails5(scope.row)" type="text" size="small">查看详情</el-button>
               </template>
             </el-table-column>
           </el-table>
-          <el-dialog title="商品信息" :visible.sync="dialogFormVisible3" class="form-modify">
-            <el-form :model="formModify" ref="formModify" label-width="80px">
-              <el-form-item label="商品名称" >
-                <el-input type="text" v-model="formModify.name" ></el-input>
-              </el-form-item>
-              <el-form-item label="分类" >
-                <el-select v-model="formModify.region"  clearable placeholder="请选择商品类型" class="form-option">
-                  <el-option
-                    v-for="item in labelType"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="价格" >
-                <el-input type="text" v-model="formModify.price" ></el-input>
-              </el-form-item>
-              <el-form-item label="是否新品" >
-                <el-select v-model="formModify.isNew"  clearable placeholder="请选择" class="form-option">
-                  <el-option
-                    v-for="item in labelTypeIsNew"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-form>
+          <el-dialog title="订单信息" :visible.sync="dialogFormVisible5" class="form-modify">
+            <el-table :data="orderData" style="width: 100%" >
+              <el-table-column prop="goodsName" label="商品名称" width="120"></el-table-column>
+              <el-table-column prop="goodsType" label="分类" width="120"></el-table-column>
+              <el-table-column prop="price" label="价格" width="120"></el-table-column>
+              <el-table-column prop="ctime" label="创建时间" width="160"></el-table-column>
+              <el-table-column prop="utime" label="修改时间" width="160"></el-table-column>
+            </el-table>
             <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisible3 = false">取 消</el-button>
-              <el-button type="primary" @click="goFormModify">确 定</el-button>
+              <el-button type="primary" @click="dialogFormVisible5 = false">关闭</el-button>
             </div>
           </el-dialog>
           <div class="block">
@@ -336,9 +210,9 @@
     name:'border',
     data() {
       return {
-        formAdmin: {            //  搜索条件
+        formOrder: {            //  搜索条件
+          userName: '',
           goodsName: '',
-          goodsType: '',
         },
         dataAll: [
           {
@@ -354,12 +228,24 @@
         ],           //  表格信息
         loading:false,        //  加载中
         activeName:'first',   // 首页显示表格
+        dialogFormVisible1: false,  // 查看详情1
+        dialogFormVisible2: false,  // 查看详情2
+        dialogFormVisible3: false,  // 查看详情3
+        dialogFormVisible4: false,  // 查看详情4
+        dialogFormVisible5: false,  // 查看详情5
+        orderData:[
+          {
+            goodsName:'宠物',
+            goodsType:'宠物',
+            price:19,
+            ctime:'2018-05-5 14:20:40',
+            utime:'2018-05-5 14:20:40',
+          }
+        ],       //  订单详情信息
+
         pageState: null,    //  当前页编号
         isShelf:false,      //  判断商品是否上架
         goodsId: '',     // 商品ID
-        dialogFormVisible1: false,  // 是否编辑1
-        dialogFormVisible2: false,  // 是否编辑2
-        dialogFormVisible3: false,  // 是否编辑3
         formModify: {            // 编辑商品基本信息
           name: '',
           region: '',
@@ -427,7 +313,7 @@
       }
     },
     mounted:function(){
-      this.search();
+      this.searchOrder();
     },
     methods: {
       // 标签事件
@@ -440,13 +326,27 @@
         //this.searchBusiness();
         this.$message('搜索');
       },
-      // 编辑1
-      auditingEdit1(row){
-        this.dialogFormVisible1 = true
-        console.log(row.userId);
-        this.goodsId = row.goodsId
-        this.$message('编辑');
+      // 查看详情1---
+      viewDetails1(row){
+        this.dialogFormVisible1 = true;
       },
+      // 查看详情2---
+      viewDetails2(row){
+        this.dialogFormVisible2 = true;
+      },
+      // 查看详情3---
+      viewDetails3(row){
+        this.dialogFormVisible3 = true;
+      },
+      // 查看详情4---
+      viewDetails4(row){
+        this.dialogFormVisible4 = true;
+      },
+      // 查看详情5---
+      viewDetails5(row){
+        this.dialogFormVisible5 = true;
+      },
+      // 编辑1
       // 编辑2
       auditingEdit2(row){
         this.dialogFormVisible2 = true
@@ -502,13 +402,8 @@
           });
         });
       },
-      //   添加商品
-      create(){
-        this.createGoods = true;
-      },
-      //   搜索商品
-      async search(){
-        this.createGoods = false;
+      //   搜索订单  ---
+      async searchOrder(){
         // this.loading = true;
         // let params={},
         //   formAdmin = this.formAdmin;
@@ -535,17 +430,45 @@
         // }else{
         //   this.$message(res.msg);
         // }
+        this.$message('搜索订单');
       },
-      //   提交搜索表单
-      sumitForm(name){
+      //   提交搜索表单 ---
+      submitForm(name){
         this.goAddAdmin();
       },
       // 添加管理员
-      // 改变页码
+      // 改变页码 ---
       handleCurrentChange(val){
         this.pageNo = val;
         this.$message('页码改变');
         //this.searchUser();  搜索事件
+      },
+      // 订单总价
+      getSummaries(param){
+        const { columns, data } = param;
+        const sums = [];
+        columns.forEach((column, index) => {
+          if (index === 0) {
+            sums[index] = '总价';
+            return;
+          }
+          const values = data.map(item => Number(item[column.property]));
+          if (!values.every(value => isNaN(value))) {
+            sums[index] = values.reduce((prev, curr) => {
+              const value = Number(curr);
+              if (!isNaN(value)) {
+                return prev + curr;
+              } else {
+                return prev;
+              }
+            }, 0);
+            sums[index] += ' 元';
+          } else {
+            sums[index] = 'N/A';
+          }
+        });
+
+        return sums;
       },
       // 编辑商品
       goFormModify(){
@@ -563,10 +486,6 @@
         // }
         this.dialogFormVisible = false
       },
-      // 添加商品
-      goAddGoods(){
-
-      }
     },
   }
 </script>
@@ -590,7 +509,7 @@
     margin:0 auto;
   }
   .form-modify{
-    width:60%;
+    width:100%;
     margin:0 auto;
   }
   .form-option{

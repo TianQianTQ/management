@@ -448,7 +448,7 @@
         // }
       },
       //   提交搜索表单
-      sumitForm(name){
+      submitForm(name){
         this.goAddAdmin();
       },
       // 添加管理员
