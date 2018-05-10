@@ -44,34 +44,9 @@
                         title: '订单管理',
                     },
                     {
-                        icon: 'iconfont t-huiyuanguanli',
-                        index: 'bmember',
-                        title: '会员管理'
-                    },
-                    {
-                        icon: 'iconfont t-icon_yuangongguanli',
-                        index: 'bstaff',
-                        title: '员工管理'
-                    },
-                    {
-                      icon: 'iconfont t-permissions',
-                      index: 'bjurisdiction',
-                      title: '权限管理'
-                    },
-                    {
-                      icon: 'iconfont t-kefu',
-                      index: 'bkefu',
-                      title: '客服管理'
-                    },
-                    {
                       icon: 'iconfont t-gerenzhongxin',
                       index: 'bperson',
                       title: '个人中心'
-                    },
-                    {
-                      icon: 'iconfont t-zijinguanli',
-                      index: 'bcapital',
-                      title: '资金管理'
                     },
                     {
                       icon: 'iconfont t-tongji',

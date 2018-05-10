@@ -3,10 +3,7 @@
     <div class="handle-box">
       <el-form ref="formAdmin" :model="formAdmin" label-width="80px" inline>
         <el-form-item label="商品名">
-          <el-input v-model="formAdmin.goodsName" @keyup.enter.native="submitForm(formAdmin)"></el-input>
-        </el-form-item>
-        <el-form-item label="商品类目">
-          <el-input v-model="formAdmin.goodsType" @keyup.enter.native="submitForm(formAdmin)"></el-input>
+          <el-input v-model="formAdmin.productName" @keyup.enter.native="submitForm(formAdmin)"></el-input>
         </el-form-item>
         <el-button type="primary" icon="search" @click="search" class="search">搜索</el-button>
         <el-button type="success" icon="iconfont t-icon02" class="create" @click="create">添加商品</el-button>
@@ -16,19 +13,15 @@
       <el-tabs v-model="activeName" @tab-click="handleClick" class="tabs">
         <el-tab-pane label="全部" name="first">
           <el-table :data="dataAll" border style="width: 100%;" v-loading="loading">
-            <el-table-column prop="goodsName" label="商品名称" width="120"></el-table-column>
-            <el-table-column prop="goodsType" label="分类" width="120"></el-table-column>
+            <el-table-column prop="productName" label="商品名称" width="200"></el-table-column>
+            <el-table-column prop="goodsType" label="分类" width="140"></el-table-column>
             <el-table-column prop="price" label="价格" width="120"></el-table-column>
-            <el-table-column prop="number" label="库存" width="120"></el-table-column>
-            <el-table-column prop="volume" label="销量" width="100"></el-table-column>
-            <el-table-column prop="isNew" label="是否新品" width="100"></el-table-column>
-            <el-table-column prop="ctime" label="创建时间" width="160"></el-table-column>
-            <el-table-column prop="utime" label="修改时间" width="160"></el-table-column>
-            <el-table-column label="操作" width="170" prop="goodsId">
+            <el-table-column prop="stock" label="库存" width="120"></el-table-column>
+            <el-table-column prop="ctime" label="创建时间" width="190"></el-table-column>
+            <el-table-column prop="utime" label="修改时间" width="190"></el-table-column>
+            <el-table-column label="操作" width="200" prop="productId">
               <template slot-scope="scope">
                 <el-button @click="auditingEdit1(scope.row)" type="text" size="small">编辑</el-button>
-                <el-button v-show="isShelf" @click="auditingUp(scope.row)" type="text" size="small">上架</el-button>
-                <el-button v-show="!isShelf" @click="auditingDown(scope.row)" type="text" size="small">下架</el-button>
                 <el-button  @click="auditingDelete(scope.row)" type="text" size="small">删除</el-button>
               </template>
             </el-table-column>
@@ -36,35 +29,28 @@
           <el-dialog title="商品信息" :visible.sync="dialogFormVisible1" class="form-modify">
             <el-form :model="formModify" ref="formModify" label-width="80px">
               <el-form-item label="商品名称" >
-                <el-input type="text" v-model="formModify.name" ></el-input>
+                <el-input type="text" v-model="formModify.productName" ></el-input>
               </el-form-item>
               <el-form-item label="分类" >
-                <el-select v-model="formModify.region"  clearable placeholder="请选择商品类型" class="form-option">
+                <el-select v-model="formModify.category"  clearable placeholder="请选择商品类型" class="form-option">
                   <el-option
                     v-for="item in labelType"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
+                    :key="item.productCategoryId"
+                    :label="item.categoryName"
+                    :value="item.productCategoryId">
                   </el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="价格" >
-                <el-input type="text" v-model="formModify.price" ></el-input>
+                <el-input type="number" v-model="formModify.price" ></el-input>
               </el-form-item>
-              <el-form-item label="是否新品" >
-                <el-select v-model="formModify.isNew"  clearable placeholder="请选择" class="form-option">
-                  <el-option
-                    v-for="item in labelTypeIsNew"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
+              <el-form-item label="库存" >
+                <el-input type="number" v-model="formModify.stock" ></el-input>
               </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
               <el-button @click="dialogFormVisible1 = false">取 消</el-button>
-              <el-button type="primary" @click="goFormModify">确 定</el-button>
+              <el-button type="primary" @click="goFormModify1">确 定</el-button>
             </div>
           </el-dialog>
           <div class="block">
@@ -79,15 +65,13 @@
         </el-tab-pane>
         <el-tab-pane label="已上架" name="second">
           <el-table :data="dataAll" border style="width: 100%;" v-loading="loading">
-            <el-table-column prop="goodsName" label="商品名称" width="120"></el-table-column>
-            <el-table-column prop="goodsType" label="分类" width="120"></el-table-column>
+            <el-table-column prop="productName" label="商品名称" width="200"></el-table-column>
+            <el-table-column prop="goodsType" label="分类" width="140"></el-table-column>
             <el-table-column prop="price" label="价格" width="120"></el-table-column>
-            <el-table-column prop="number" label="库存" width="120"></el-table-column>
-            <el-table-column prop="volume" label="销量" width="100"></el-table-column>
-            <el-table-column prop="isNew" label="是否新品" width="100"></el-table-column>
-            <el-table-column prop="ctime" label="创建时间" width="160"></el-table-column>
-            <el-table-column prop="utime" label="修改时间" width="160"></el-table-column>
-            <el-table-column label="操作" width="170" prop="goodsId">
+            <el-table-column prop="stock" label="库存" width="120"></el-table-column>
+            <el-table-column prop="ctime" label="创建时间" width="190"></el-table-column>
+            <el-table-column prop="utime" label="修改时间" width="190"></el-table-column>
+            <el-table-column label="操作" width="200" prop="productId">
               <template slot-scope="scope">
                 <el-button @click="auditingEdit2(scope.row)" type="text" size="small">编辑</el-button>
                 <el-button  @click="auditingDown(scope.row)" type="text" size="small">下架</el-button>
@@ -98,35 +82,28 @@
           <el-dialog title="商品信息" :visible.sync="dialogFormVisible2" class="form-modify">
             <el-form :model="formModify" ref="formModify" label-width="80px">
               <el-form-item label="商品名称" >
-                <el-input type="text" v-model="formModify.name" ></el-input>
+                <el-input type="text" v-model="formModify.productName" ></el-input>
               </el-form-item>
               <el-form-item label="分类" >
-                <el-select v-model="formModify.region"  clearable placeholder="请选择商品类型" class="form-option">
+                <el-select v-model="formModify.category"  clearable placeholder="请选择商品类型" class="form-option">
                   <el-option
                     v-for="item in labelType"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
+                    :key="item.productCategoryId"
+                    :label="item.categoryName"
+                    :value="item.productCategoryId">
                   </el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="价格" >
-                <el-input type="text" v-model="formModify.price" ></el-input>
+                <el-input type="number" v-model="formModify.price" ></el-input>
               </el-form-item>
-              <el-form-item label="是否新品" >
-                <el-select v-model="formModify.isNew"  clearable placeholder="请选择" class="form-option">
-                  <el-option
-                    v-for="item in labelTypeIsNew"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
+              <el-form-item label="库存" >
+                <el-input type="number" v-model="formModify.stock" ></el-input>
               </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
               <el-button @click="dialogFormVisible2 = false">取 消</el-button>
-              <el-button type="primary" @click="goFormModify">确 定</el-button>
+              <el-button type="primary" @click="goFormModify2">确 定</el-button>
             </div>
           </el-dialog>
           <div class="block">
@@ -141,15 +118,13 @@
         </el-tab-pane>
         <el-tab-pane label="已下架" name="third">
           <el-table :data="dataAll" border style="width: 100%;" v-loading="loading">
-            <el-table-column prop="goodsName" label="商品名称" width="120"></el-table-column>
-            <el-table-column prop="goodsType" label="分类" width="120"></el-table-column>
+            <el-table-column prop="productName" label="商品名称" width="200"></el-table-column>
+            <el-table-column prop="goodsType" label="分类" width="140"></el-table-column>
             <el-table-column prop="price" label="价格" width="120"></el-table-column>
-            <el-table-column prop="number" label="库存" width="120"></el-table-column>
-            <el-table-column prop="volume" label="销量" width="100"></el-table-column>
-            <el-table-column prop="isNew" label="是否新品" width="100"></el-table-column>
-            <el-table-column prop="ctime" label="创建时间" width="160"></el-table-column>
-            <el-table-column prop="utime" label="修改时间" width="160"></el-table-column>
-            <el-table-column label="操作" width="170" prop="goodsId">
+            <el-table-column prop="stock" label="库存" width="120"></el-table-column>
+            <el-table-column prop="ctime" label="创建时间" width="190"></el-table-column>
+            <el-table-column prop="utime" label="修改时间" width="190"></el-table-column>
+            <el-table-column label="操作" width="200" prop="productId">
               <template slot-scope="scope">
                 <el-button @click="auditingEdit3(scope.row)" type="text" size="small">编辑</el-button>
                 <el-button  @click="auditingUp(scope.row)" type="text" size="small">上架</el-button>
@@ -160,35 +135,28 @@
           <el-dialog title="商品信息" :visible.sync="dialogFormVisible3" class="form-modify">
             <el-form :model="formModify" ref="formModify" label-width="80px">
               <el-form-item label="商品名称" >
-                <el-input type="text" v-model="formModify.name" ></el-input>
+                <el-input type="text" v-model="formModify.productName" ></el-input>
               </el-form-item>
               <el-form-item label="分类" >
-                <el-select v-model="formModify.region"  clearable placeholder="请选择商品类型" class="form-option">
+                <el-select v-model="formModify.category"  clearable placeholder="请选择商品类型" class="form-option">
                   <el-option
                     v-for="item in labelType"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
+                    :key="item.productCategoryId"
+                    :label="item.categoryName"
+                    :value="item.productCategoryId">
                   </el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="价格" >
-                <el-input type="text" v-model="formModify.price" ></el-input>
+                <el-input type="number" v-model="formModify.price" ></el-input>
               </el-form-item>
-              <el-form-item label="是否新品" >
-                <el-select v-model="formModify.isNew"  clearable placeholder="请选择" class="form-option">
-                  <el-option
-                    v-for="item in labelTypeIsNew"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
+              <el-form-item label="库存" >
+                <el-input type="number" v-model="formModify.stock" ></el-input>
               </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
               <el-button @click="dialogFormVisible3 = false">取 消</el-button>
-              <el-button type="primary" @click="goFormModify">确 定</el-button>
+              <el-button type="primary" @click="goFormModify3">确 定</el-button>
             </div>
           </el-dialog>
           <div class="block">
@@ -206,30 +174,37 @@
     <div class="add-goods" v-else >
       <el-form :model="formAddGoods" ref="formAddGoods" label-width="100px">
         <el-form-item label="商品名称" >
-          <el-input type="text" v-model="formAddGoods.name" ></el-input>
+          <el-input type="text" v-model="formAddGoods.productName" ></el-input>
         </el-form-item>
         <el-form-item label="分类" >
-          <el-select v-model="formAddGoods.region"  clearable placeholder="请选择商品类型" class="form-option">
+          <el-select v-model="formAddGoods.category"  clearable placeholder="请选择商品类型" class="form-option">
             <el-option
               v-for="item in labelType"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.productCategoryId"
+              :label="item.categoryName"
+              :value="item.productCategoryId">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="价格" >
-          <el-input type="text" v-model="formAddGoods.price" ></el-input>
+          <el-input type="number" v-model="formAddGoods.price" class="el-input-price"></el-input>
         </el-form-item>
-        <el-form-item label="是否新品" >
-          <el-select v-model="formAddGoods.isNew"  clearable placeholder="请选择" class="form-option">
-            <el-option
-              v-for="item in labelTypeIsNew"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
+        <el-form-item label="库存" >
+          <el-input type="number" v-model="formAddGoods.stock" class="el-input-price"></el-input>
+        </el-form-item>
+        <el-form-item label="商品描述" >
+          <el-input type="textarea" v-model="formAddGoods.productDesc" ></el-input>
+        </el-form-item>
+        <el-form-item label="图片" >
+          <el-upload
+            class="avatar-uploader"
+            action="/api-business/business/upload-image"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="goAddGoods">添加</el-button>
@@ -247,74 +222,37 @@
     data() {
       return {
         formAdmin: {            //  搜索条件
-          goodsName: '',
-          goodsType: '',
+          productName: '',
         },
         createGoods:false,      // 添加商品
-        dataAll: [
-          {
-            goodsName:'zhangsan',
-            goodsType:'宠物',
-            price:'8',
-            number:10,
-            volume:10,
-            isNew:'新品',
-            ctime:'2018-05-5 14:20:40',
-            utime:'2018-05-5 14:20:40',
-          }
-        ],           //  表格信息
+        dataAll: [],           //  表格信息  --所有
         loading:false,        //  加载中
         activeName:'first',   // 首页显示表格
         pageState: null,    //  当前页编号
         isShelf:false,      //  判断商品是否上架
-        goodsId: '',     // 商品ID
+        productId: '',     // 商品ID
+        shopId:'',       // 店铺ID
         dialogFormVisible1: false,  // 是否编辑1
         dialogFormVisible2: false,  // 是否编辑2
         dialogFormVisible3: false,  // 是否编辑3
         formModify: {            // 编辑商品基本信息
-          name: '',
-          region: '',
-          price:'',
-          isNew:''
+          productName : '',      // 商品名称
+          category: '',         //  商品分类
+          price:'',             // 商品价格
+          stock:'',            // 商品库存
         },
-        formAddGoods:{            // 添加商品
-          name: '',
-          region: '',
-          price:'',
-          isNew:''
+        formAddGoods:{                  // 添加商品
+          productName : '',      // 商品名称
+          category: '',         //  商品分类
+          price:'',             // 商品价格
+          stock:'',            // 商品库存
+          productDesc:'',      // 商品描述
+          imageIds:[]          // 商品图片
         },
+        imageUrl:'',          //  图片
+        imageId:'',           // 图片ID
                                  // 编辑商品分类
-        labelType:[
-          {
-            value: '选项1',
-            label: '书籍'
-          }, {
-            value: '选项2',
-            label: '电子产品'
-          },
-          {
-            value: '选项3',
-            label: '服饰'
-          }, {
-            value: '选项4',
-            label: '生活用品'
-          },
-          {
-            value: '选项5',
-            label: '宠物'
-          }
-        ],
-                        // 是否新品
-        labelTypeIsNew:[
-          {
-            value: '选项1',
-            label: '新品'
-          }, {
-            value: '选项2',
-            label: '非新品'
-          }
-        ],
-
+        labelType:[],      //  选择商品类目
         pageTotal: null, // 页面总数
         pageSize: 10,  // 每页显示条数
         pageNo: 1,   // 当前页
@@ -337,7 +275,21 @@
         },
       }
     },
-    mounted:function(){
+    mounted:async function(){
+      this.businessId = localStorage.getItem('businessId');
+      let res1 =await WebApi.category();
+      if(res1.code === 0){
+        this.labelType = res1.data
+      }else{
+        this.$message(res1.msg);
+      }
+      let params = {
+        businessId: this.businessId
+      }
+      let res =await WebApi.infoShop(params);
+      if(res.code === 0){
+        this.shopId = res.data.shopId
+      }
       this.search();
     },
     methods: {
@@ -348,43 +300,69 @@
         }else{
           this.pageState = null;
         }
-        //this.searchBusiness();
+        let flag = 0;
+        if(tab.index == 1){
+          flag = 1
+        }else if(tab.index ==2){
+          flag = 2
+        }
+        console.log(flag+ tab.index);
+        this.search(flag);
         this.$message('搜索');
       },
       // 编辑1
       auditingEdit1(row){
         this.dialogFormVisible1 = true
-        console.log(row.userId);
-        this.goodsId = row.goodsId
+        this.productId = row.productId
         this.$message('编辑');
       },
       // 编辑2
       auditingEdit2(row){
         this.dialogFormVisible2 = true
-        console.log(row.userId);
-        this.goodsId = row.goodsId
+        this.productId = row.productId
         this.$message('编辑');
       },
       // 编辑3
       auditingEdit3(row){
         this.dialogFormVisible3 = true
-        console.log(row.userId);
-        this.goodsId = row.goodsId
+        this.productId = row.productId
         this.$message('编辑');
       },
       // 上架
-      auditingUp(row){
-        this.goodsId = row.goodsId
-        this.$message('上架');
+      async auditingUp(row){
+        this.productId = row.productId
+        let params = {
+          shopId: this.shopId,
+          productId:this.productId,
+          status:1
+        }
+        let res = await WebApi.updateProduct(params);
+        if(res.code === 0){
+          this.search(params.status);
+          this.$message(2);
+        }else{
+          this.$message(res.msg);
+        }
       },
       // 下架
-      auditingDown(row){
-        this.goodsId = row.goodsId
-        this.$message('下架');
+      async auditingDown(row){
+        this.productId = row.productId
+        let params = {
+          shopId: this.shopId,
+          productId:this.productId,
+          status:2
+        }
+        let res = await WebApi.updateProduct(params);
+        if(res.code === 0){
+          this.search(1);
+          this.$message('下架成功');
+        }else{
+          this.$message(res.msg);
+        }
       },
       // 删除
       auditingDelete(row){
-        this.goodsId = row.goodsId
+        this.productId = row.productId
         this.$message('删除');
         this.$confirm('确认删除?', '提示', {
           confirmButtonText: '确定',
@@ -392,17 +370,15 @@
           type: 'warning'
         }).then( async() => {
           let param = {
-            goodsId:row.goodsId
+            productId:row.productId
           }
-          // let res =await WebApi.deleteAdmin(param);
-          let res = {};
-          res.code=0;
+           let res =await WebApi.deleteProduct(param);
           if(res.code ===0) {
             this.$message({
               type: 'success',
               message: '删除成功!'
             });
-            // this.search();  搜索
+             this.search();  // 搜索
           }else{
             this.$message(res.msg);
           }
@@ -414,38 +390,44 @@
         });
       },
       //   添加商品
-      create(){
+      async create(){
         this.createGoods = true;
       },
       //   搜索商品
-      async search(){
+      async search(flag){
         this.createGoods = false;
-        // this.loading = true;
-        // let params={},
-        //   formAdmin = this.formAdmin;
-        //   params.pageNo = this.pageNo;    //传递页码（第一页）
-        //   params.pageSize = this.pageSize;
-        // if(formAdmin.goodsName !== ''){
-        //   params.goodsName = formAdmin.goodsName;
-        // }
-        // if(formAdmin.goodsType !== ''){
-        //   params.goodsType = formAdmin.goodsType;
-        // }
-        // const res = {};
-        // res.code =0;
-        // if(res.code === 0 ){
-        //   this.loading = false;
-        //   this.$message('查询成功');
-        //   let tableData1 = res.data.list;
-        //   this.pageTotal = res.data.total;
-        //   this.tableData = tableData1;
-        //   tableData1 = tableData1.map(function(item,index,input){
-        //     item.ctime = utils.timestampToTime(item.ctime);
-        //     item.utime = utils.timestampToTime(item.utime);
-        //   })
-        // }else{
-        //   this.$message(res.msg);
-        // }
+        this.loading = true;
+        let params={},
+          formAdmin = this.formAdmin;
+          params.pageNo = this.pageNo;    //传递页码（第一页）
+          params.pageSize = this.pageSize;
+          params.shopId = this.shopId
+        if(formAdmin.productName !== ''){
+          params.productName = formAdmin.productName;
+        }
+        console.log(flag);
+        if(flag) {
+          if (flag == 1) {        //  上架
+            params.status = 1
+          }
+          if (flag == 2) {
+            params.status = 2
+          }
+        }
+        const res = await WebApi.listProduct(params);
+        if(res.code === 0 ){
+          this.loading = false;
+          this.$message('查询成功');
+          let tableData1 = res.data.list;
+          this.pageTotal = res.data.total;
+          this.dataAll = tableData1;
+          tableData1 = tableData1.map(function(item,index,input){
+            item.ctime = utils.timestampToTime(item.ctime);
+            item.utime = utils.timestampToTime(item.utime);
+          })
+        }else{
+          this.$message(res.msg);
+        }
       },
       //   提交搜索表单
       submitForm(name){
@@ -458,26 +440,108 @@
         this.$message('页码改变');
         //this.searchUser();  搜索事件
       },
-      // 编辑商品
-      goFormModify(){
+      // 编辑商品1
+      async goFormModify1(){
+        let formModify = this.formModify
         let params = {
-          userId: this.userId,
-          username: this.formModify.name,
-          password: this.formModify.password
+          shopId: this.shopId,
+          productId:this.productId,
+          productName:formModify.productName,
+          categoryId:formModify.category,
+          price:formModify.price,
+          stock:formModify.stock
         }
-        //let res = await WebApi.updateUser(params);
-        // if(res.code === 0){
-        //   this.searchUser();
-        //   this.$message('更改成功');
-        // }else{
-        //   this.$message(res.msg);
-        // }
-        this.dialogFormVisible = false
+        let res = await WebApi.updateProduct(params);
+        if(res.code === 0){
+          this.search();
+          this.$message('更改成功');
+        }else{
+          this.$message(res.msg);
+        }
+        this.dialogFormVisible1 = false
       },
-      // 添加商品
-      goAddGoods(){
+      // 编辑商品2
+      async goFormModify2(){
+        let formModify = this.formModify
+        let params = {
+          shopId: this.shopId,
+          productId:this.productId,
+          productName:formModify.productName,
+          categoryId:formModify.category,
+          price:formModify.price,
+          stock:formModify.stock
+        }
+        let res = await WebApi.updateProduct(params);
+        if(res.code === 0){
+          this.search();
+          this.$message('更改成功');
+        }else{
+          this.$message(res.msg);
+        }
+        this.dialogFormVisible2 = false
+      },
+      async goFormModify3(){
+        let formModify = this.formModify
+        let params = {
+          shopId: this.shopId,
+          productId:this.productId,
+          productName:formModify.productName,
+          categoryId:formModify.category,
+          price:formModify.price,
+          stock:formModify.stock
+        }
+        let res = await WebApi.updateProduct(params);
+        if(res.code === 0){
+          this.search();
+          this.$message('更改成功');
+        }else{
+          this.$message(res.msg);
+        }
+        this.dialogFormVisible3 = false
+      },
+      // 添加商品发请求
+      async goAddGoods(){
+        let formAddGoods = this.formAddGoods
+          let params = {
+            shopId: this.shopId,
+            productName: formAddGoods. productName,
+            categoryId:formAddGoods.category,
+            price:formAddGoods.price,
+            stock:formAddGoods.stock,
+            productDesc:formAddGoods.productDesc,
+            imageIds:[this.imageId],
+          }
+          console.log(params);
+        let res =await WebApi.addProduct(params);
+        if(res.code === 0){
+          this.$message({
+            message: '添加成功',
+            type: 'success'
+          });
+          this.createGoods = false;
+          this.search();   // 搜索商品
+        }else{
+          this.$message(res.msg);
+        }
 
-      }
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+      },
+      //  上传成功
+      handleAvatarSuccess(res, file){
+        this.imageUrl = res.data.url
+        this.imageId = res.data.id
+      },
     },
   }
 </script>
@@ -508,7 +572,30 @@
     float:left;
   }
   .add-goods{
-    width:50%;
+    width:40%;
+  }
+  .upload-demo{
+
+  }
+  .el-input-price{
+    width:100px;
+    float:left;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
   }
 </style>
 

@@ -46,6 +46,14 @@ class WebApi {
   category = (params) => fetch('GET','/api-products/products/category',params);
   // 商铺状态
   infoShop = (params) => fetch('GET','/api-business/business/info-shop',params);
+  // 添加商品
+  addProduct = (params) => fetch('POST','/api-business/business/add-product',params);
+  // 商品列表
+  listProduct = (params) => fetch('POST','/api-business/business/list-product',params);
+  // 编辑商品
+  updateProduct = (params) => fetch('POST','/api-business/business/update-product',params);
+  // 删除商品
+  deleteProduct = (params) => fetch('GET','/api-business/business/delete-product',params);
 
 }
 

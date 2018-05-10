@@ -3,51 +3,24 @@
     <div v-if="hasStore">
       <el-form ref="formModify" :model="formModify" label-width="100px" class="form-create">
         <el-form-item label="店铺名称" class="shop-name">
-          <p class="modify-p" v-show="!toModify">{{formModify.name}}</p>
-          <el-input v-model="formModify.name" v-show="toModify"></el-input>
-        </el-form-item>
-        <el-form-item label="经营人姓名" class="shop-name ">
-          <p class="modify-p" v-show="!toModify">{{formModify.username}}</p>
-          <el-input v-model="formModify.username" v-show="toModify"></el-input>
+          <p class="modify-p" >{{formModify.name}}</p>
         </el-form-item>
         <el-form-item label="主营类目">
-          <p class="modify-p" v-show="!toModify">{{formModify.region}}</p>
-          <el-select v-model="formModify.region" v-show="toModify" clearable placeholder="请选择主营类目" class="form-option">
-            <el-option
-              v-for="item in labelType"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
+          <p class="modify-p">{{formModify.category}}</p>
         </el-form-item>
         <el-form-item label="所在地区">
-          <p class="modify-p" v-show="!toModify">{{formModify.space}}</p>
-          <el-select v-model="form.space" v-show="toModify" clearable placeholder="请选择地区" class="form-option">
-            <el-option
-              v-for="item in labelSpare"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
+          <p class="modify-p" >{{formModify.cityName}}</p>
         </el-form-item>
         <el-form-item label="门店地址" class="shop-name shop-adress">
-          <p class="modify-p" v-show="!toModify">{{formModify.address}}</p>
-          <el-input v-model="form.address" v-show="toModify"></el-input>
+          <p class="modify-p" >{{formModify.address}}</p>
         </el-form-item>
         <el-form-item label="店铺公告" class="shop-name ">
-          <p class="modify-p" v-show="!toModify">{{formModify.desc}}</p>
-          <el-input type="textarea" v-show="toModify" v-model="formModify.desc"></el-input>
+          <p class="modify-p" >{{formModify.notice}}</p>
         </el-form-item>
-        <el-form-item label="发件地址" class="shop-name">
-          <p class="modify-p" v-show="!toModify">{{formModify.goodsaddress}}</p>
-          <el-input v-model="formModify.goodsaddress" v-show="toModify"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="onSubmitModify" v-show="toModify">完成</el-button>
-          <el-button type="primary" @click="onModify" v-show="!toModify">编辑</el-button>
-        </el-form-item>
+        <!--<el-form-item>-->
+          <!--<el-button type="primary" @click="onSubmitModify" v-show="toModify">完成</el-button>-->
+          <!--<el-button type="primary" @click="onModify" v-show="!toModify">编辑</el-button>-->
+        <!--</el-form-item>-->
       </el-form>
     </div>
     <div v-else>
@@ -116,8 +89,8 @@
             currentView: '',
             hasStore: false,  // 判断是否有店铺
             businessId: null, // 商家id
+            shopId: null,     // 店铺id
             toCreate: false,  // 创建店铺
-            toModify: false,   // 去编辑
             examine: false,   // 店铺审核
             form: {           // 表单数据
               name: '',       //  店铺名称
@@ -129,11 +102,11 @@
               desc: '',       //  店铺公告
             },
             formModify: {           // 可编辑 ---接口返回数据
-              name: '田家的小烽仔',       //  店铺名称
-              region: '宠物',     //  主营类目
-              space:'西安',       //  所在地区
-              address:'西安邮电大学',      //  店铺地址
-              desc: '欢迎来到小店',       //  店铺公告
+              // name: '田家的小烽仔',       //  店铺名称
+              // region: '宠物',     //  主营类目
+              // space:'西安',       //  所在地区
+              // address:'西安邮电大学',      //  店铺地址
+              // desc: '欢迎来到小店',       //  店铺公告
             },
                                 // 选择主营类目
             labelType:[],
@@ -156,6 +129,7 @@
           if(res.code === 0) {  // 已创建店铺
               this.hasStore = true
               this.examine = false
+              this.formModify = res.data
           }else if(res.code === -2){   // 审核中
             this.hasStore = false
             this.examine = true
@@ -238,16 +212,6 @@
               this.$message(res.msg);
             }
           },
-          // 修改店铺
-          onModify(){
-              this.toModify = true;
-              this.$message('修改');
-          },
-          //  完成修改
-          onSubmitModify(){
-            this.toModify = false;
-            this.$message('完成修改');
-          }
         }
     }
 </script>
