@@ -22,7 +22,7 @@
             <el-table-column label="操作" width="200" prop="productId">
               <template slot-scope="scope">
                 <el-button @click="auditingEdit1(scope.row)" type="text" size="small">编辑</el-button>
-                <el-button  @click="auditingDelete(scope.row)" type="text" size="small">删除</el-button>
+                <el-button  @click="auditingDelete1(scope.row)" type="text" size="small">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -55,7 +55,7 @@
           </el-dialog>
           <div class="block">
             <el-pagination
-              @current-change="handleCurrentChange"
+              @current-change="handleCurrentChange1"
               :page-size= pageSize
               layout="total, prev, pager, next, jumper"
               :total= pageTotal
@@ -75,7 +75,7 @@
               <template slot-scope="scope">
                 <el-button @click="auditingEdit2(scope.row)" type="text" size="small">编辑</el-button>
                 <el-button  @click="auditingDown(scope.row)" type="text" size="small">下架</el-button>
-                <el-button  @click="auditingDelete(scope.row)" type="text" size="small">删除</el-button>
+                <el-button  @click="auditingDelete2(scope.row)" type="text" size="small">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -108,7 +108,7 @@
           </el-dialog>
           <div class="block">
             <el-pagination
-              @current-change="handleCurrentChange"
+              @current-change="handleCurrentChange2"
               :page-size= pageSize
               layout="total, prev, pager, next, jumper"
               :total= pageTotal
@@ -128,7 +128,7 @@
               <template slot-scope="scope">
                 <el-button @click="auditingEdit3(scope.row)" type="text" size="small">编辑</el-button>
                 <el-button  @click="auditingUp(scope.row)" type="text" size="small">上架</el-button>
-                <el-button  @click="auditingDelete(scope.row)" type="text" size="small">删除</el-button>
+                <el-button  @click="auditingDelete3(scope.row)" type="text" size="small">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -161,7 +161,7 @@
           </el-dialog>
           <div class="block">
             <el-pagination
-              @current-change="handleCurrentChange"
+              @current-change="handleCurrentChange3"
               :page-size= pageSize
               layout="total, prev, pager, next, jumper"
               :total= pageTotal
@@ -256,23 +256,6 @@
         pageTotal: null, // 页面总数
         pageSize: 10,  // 每页显示条数
         pageNo: 1,   // 当前页
-        tableData:[], // 表格数据
-        addAdmin: {
-          username: '',
-          mobile:'',
-          password:''
-        },
-        rulesaddAdmin: {
-          username: [
-            {required: true, message: '请输入用户名', trigger: 'blur'}
-          ],
-          mobile: [
-            {required: true, message: '请输入手机号', trigger: 'blur'}
-          ],
-          password: [
-            {required: true, message: '请输入密码', trigger: 'blur'}
-          ],
-        },
       }
     },
     mounted:async function(){
@@ -310,23 +293,32 @@
         this.search(flag);
         this.$message('搜索');
       },
+      // 编辑
+      _auditingEdit(index){
+        switch(index){
+          case 1:  this.dialogFormVisible1 = true
+                   break
+          case 2:  this.dialogFormVisible2 = true
+                   break
+          case 3:  this.dialogFormVisible3 = true
+                   break
+        }
+
+      },
       // 编辑1
       auditingEdit1(row){
-        this.dialogFormVisible1 = true
+        this._auditingEdit(1)
         this.productId = row.productId
-        this.$message('编辑');
       },
       // 编辑2
       auditingEdit2(row){
-        this.dialogFormVisible2 = true
+        this._auditingEdit(2)
         this.productId = row.productId
-        this.$message('编辑');
       },
       // 编辑3
       auditingEdit3(row){
-        this.dialogFormVisible3 = true
+        this._auditingEdit(3)
         this.productId = row.productId
-        this.$message('编辑');
       },
       // 上架
       async auditingUp(row){
@@ -338,8 +330,7 @@
         }
         let res = await WebApi.updateProduct(params);
         if(res.code === 0){
-          this.search(params.status);
-          this.$message(2);
+          this.search(2);
         }else{
           this.$message(res.msg);
         }
@@ -361,24 +352,32 @@
         }
       },
       // 删除
-      auditingDelete(row){
-        this.productId = row.productId
-        this.$message('删除');
+      _auditingDelete(index,productId){
+        let flag = null;
+        if(index === 2){
+          flag = 1
+        }else if(index === 3){
+          flag = 2
+        }else if(index === 1){
+          flag = null
+        }
+        this.productId = productId
         this.$confirm('确认删除?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then( async() => {
           let param = {
-            productId:row.productId
+            productId: productId
           }
-           let res =await WebApi.deleteProduct(param);
+          let res =await WebApi.deleteProduct(param);
           if(res.code ===0) {
             this.$message({
               type: 'success',
               message: '删除成功!'
             });
-             this.search();  // 搜索
+            console.log(flag);
+            this.search(flag);  // 搜索
           }else{
             this.$message(res.msg);
           }
@@ -388,6 +387,21 @@
             message: '已取消删除'
           });
         });
+      },
+      // 删除1
+      auditingDelete1(row){
+        this.productId = row.productId
+        this._auditingDelete(1,row.productId)
+      },
+      // 删除2
+      auditingDelete2(row){
+        this.productId = row.productId
+        this._auditingDelete(2,row.productId)
+      },
+      // 删除3
+      auditingDelete3(row){
+        this.productId = row.productId
+        this._auditingDelete(3,row.productId)
       },
       //   添加商品
       async create(){
@@ -433,15 +447,33 @@
       submitForm(name){
         this.goAddAdmin();
       },
-      // 添加管理员
       // 改变页码
-      handleCurrentChange(val){
+      _handleCurrentChange(val,index){
+        let flag = null;
+        if(index === 2){
+          flag = 1
+        }else if(index === 3){
+          flag = 2
+        }else if(index === 1){
+          flag = null
+        }
         this.pageNo = val;
-        this.$message('页码改变');
-        //this.searchUser();  搜索事件
+        this.search(flag);
       },
-      // 编辑商品1
-      async goFormModify1(){
+      // 改变页码1
+      handleCurrentChange1(val){
+        this._handleCurrentChange(val,1)
+      },
+      // 改变页码2
+      handleCurrentChange2(val){
+        this._handleCurrentChange(val,1)
+      },
+      // 改变页码3
+      handleCurrentChange3(val){
+        this._handleCurrentChange(val,1)
+      },
+      // 编辑商品确认
+      async _goFormModify(index){
         let formModify = this.formModify
         let params = {
           shopId: this.shopId,
@@ -453,51 +485,37 @@
         }
         let res = await WebApi.updateProduct(params);
         if(res.code === 0){
-          this.search();
+          switch(index){
+            case 2:this.search(1)
+                   break
+            case 3:this.search(2)
+                   break
+            default:this.search()
+                    break
+          }
           this.$message('更改成功');
         }else{
           this.$message(res.msg);
         }
-        this.dialogFormVisible1 = false
+        switch(index){
+          case 1:  this.dialogFormVisible1 = true
+            break
+          case 2:  this.dialogFormVisible2 = true
+            break
+          case 3:  this.dialogFormVisible3 = true
+            break
+        }
+      },
+      // 编辑商品1
+      goFormModify1(){
+        _goFormModify(1);
       },
       // 编辑商品2
       async goFormModify2(){
-        let formModify = this.formModify
-        let params = {
-          shopId: this.shopId,
-          productId:this.productId,
-          productName:formModify.productName,
-          categoryId:formModify.category,
-          price:formModify.price,
-          stock:formModify.stock
-        }
-        let res = await WebApi.updateProduct(params);
-        if(res.code === 0){
-          this.search();
-          this.$message('更改成功');
-        }else{
-          this.$message(res.msg);
-        }
-        this.dialogFormVisible2 = false
+        _goFormModify(2);
       },
       async goFormModify3(){
-        let formModify = this.formModify
-        let params = {
-          shopId: this.shopId,
-          productId:this.productId,
-          productName:formModify.productName,
-          categoryId:formModify.category,
-          price:formModify.price,
-          stock:formModify.stock
-        }
-        let res = await WebApi.updateProduct(params);
-        if(res.code === 0){
-          this.search();
-          this.$message('更改成功');
-        }else{
-          this.$message(res.msg);
-        }
-        this.dialogFormVisible3 = false
+        _goFormModify(3);
       },
       // 添加商品发请求
       async goAddGoods(){
