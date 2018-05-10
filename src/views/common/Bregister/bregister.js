@@ -44,7 +44,7 @@ export default {
     toLogin() {     //去注册
       console.log("登录");
       this.$router.replace({
-        name: 'Login',
+        name: 'login',
         query: {}
       })
     },

@@ -15,42 +15,42 @@
 </template>
 
 <script scoped>
-    export default {
-        name: "t-capsule",
-        props: {
-          title: {
-            type: String,
-            default: ''
-          },
-          name: {
-            type: String,
-            default: ''
-          },
-          params: {
-            type: String,
-            default: ''
-          },
-          query: {
-            type: String,
-            default: ''
-          },
-          tclass:{
-            type:String,
-          }
-        },
-    }
+  export default {
+    name: "t-capsule",
+    props: {
+      title: {
+        type: String,
+        default: ''
+      },
+      name: {
+        type: String,
+        default: ''
+      },
+      params: {
+        type: String,
+        default: ''
+      },
+      query: {
+        type: String,
+        default: ''
+      },
+      tclass:{
+        type:String,
+      }
+    },
+  }
 </script>
 
 <style scoped>
- .card{
-   display:inline-block;
-   width:200px;
-   height:100px;
-   text-align: center;
-   border-radius: 4px 4px 4px 4px;
-   box-shadow: 4px 4px 4px #8c939d;
-   background:#f1f2f7;
- }
+  .card{
+    display:inline-block;
+    width:200px;
+    height:100px;
+    text-align: center;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 4px 4px 4px #8c939d;
+    background:#f1f2f7;
+  }
   .icon{
     float:left;
     height:100px;

@@ -40,6 +40,12 @@ class WebApi {
 
   // 创建商铺
   createShop = (params) => fetch('POST','/api-business/business/create-shop',params);
+  // 城市信息
+  getCity = (params) => fetch('GET','/api-business/business/city',params);
+  // 商品列表
+  category = (params) => fetch('GET','/api-products/products/category',params);
+  // 商铺状态
+  infoShop = (params) => fetch('GET','/api-business/business/info-shop',params);
 
 }
 

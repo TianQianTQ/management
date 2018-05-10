@@ -71,7 +71,7 @@
         submitForm(name){
           this.toChangeInformation();
         },
-
+       // 图片上传成功
         handleAvatarSuccess(res, file) {
           console.log(res);
           this.imageUrl = res.data.url;

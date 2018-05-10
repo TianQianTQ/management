@@ -30,7 +30,10 @@ module.exports = {
         proxyTable: {
           '/api-business/business/*':{
             target:'http://xiyoubuy.cn:8901',
-          }
+          },
+          '/api-products/products/*':{
+            target:'http://xiyoubuy.cn:8901',
+          },
         },
         // CSS Sourcemaps off by default because relative paths are "buggy"
         // with this option, according to the CSS-Loader README
