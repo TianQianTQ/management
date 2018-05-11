@@ -466,11 +466,11 @@
       },
       // 改变页码2
       handleCurrentChange2(val){
-        this._handleCurrentChange(val,1)
+        this._handleCurrentChange(val,2)
       },
       // 改变页码3
       handleCurrentChange3(val){
-        this._handleCurrentChange(val,1)
+        this._handleCurrentChange(val,3)
       },
       // 编辑商品确认
       async _goFormModify(index){
@@ -498,24 +498,24 @@
           this.$message(res.msg);
         }
         switch(index){
-          case 1:  this.dialogFormVisible1 = true
+          case 1:  this.dialogFormVisible1 = false
             break
-          case 2:  this.dialogFormVisible2 = true
+          case 2:  this.dialogFormVisible2 = false
             break
-          case 3:  this.dialogFormVisible3 = true
+          case 3:  this.dialogFormVisible3 = false
             break
         }
       },
       // 编辑商品1
       goFormModify1(){
-        _goFormModify(1);
+        this._goFormModify(1);
       },
       // 编辑商品2
       async goFormModify2(){
-        _goFormModify(2);
+        this._goFormModify(2);
       },
       async goFormModify3(){
-        _goFormModify(3);
+        this._goFormModify(3);
       },
       // 添加商品发请求
       async goAddGoods(){

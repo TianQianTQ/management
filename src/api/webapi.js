@@ -54,6 +54,12 @@ class WebApi {
   updateProduct = (params) => fetch('POST','/api-business/business/update-product',params);
   // 删除商品
   deleteProduct = (params) => fetch('GET','/api-business/business/delete-product',params);
+  // 更新订单状态
+  updateOrder = (params) => fetch('POST','/api-business/business/update-order',params);
+  // 订单列表
+  listOrder = (params) => fetch('POST','/api-business/business/list-order',params);
+  // 订单详情
+  infoOrder = (params) => fetch('GET','/api-business/business/info-order',params);
 
 }
 
